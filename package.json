@@ -6,10 +6,17 @@
   "scripts": {
     "build:ch": "node build-chapter.js --book atomic-habits --chapter",
     "build:batch": "node build-chapter.js --batch atomic-habits",
+    "build:upload": "node build-chapter.js --batch atomic-habits --upload",
     "lint": "npx hyperframes lint",
     "validate": "npx hyperframes validate"
   },
+  "dependencies": {
+    "youtube-videos-uploader": "^2.0.28"
+  },
   "engines": {
     "node": ">=22"
+  },
+  "allowScripts": {
+    "puppeteer@14.4.1": true
   }
 }

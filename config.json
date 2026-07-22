@@ -1,10 +1,15 @@
 {
   "voice": "en-US-GuyNeural",
-  "voice_rate": "-10%",
+  "voice_rate": "-3%",
   "audio_format": "wav",
-  "wpm": 148,
+  "wpm": 164,
   "fps": 30,
   "quality": "high",
   "canvas_width": 1920,
-  "canvas_height": 1080
+  "canvas_height": 1080,
+  "youtube": {
+    "publish_type": "PUBLIC",
+    "channel": "Book Summary Channel",
+    "upload_as_draft": true
+  }
 }
