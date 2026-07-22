@@ -1,0 +1,85 @@
+SCRIPTS = {
+    # Channel A — "How It Actually Works"
+    "channel-a/phone-orientation": (
+        "How does your phone know which way is up?\n\n"
+        "Inside your phone, there is a tiny sensor — smaller than a grain of rice. "
+        "It's called an accelerometer.\n\n"
+        "An accelerometer measures acceleration — including the one you feel right now. "
+        "Gravity. About nine point eight meters per second squared, pulling you down.\n\n"
+        "The sensor has three tiny structures inside. Each one can move a little — like a spring with a weight on it. "
+        "When your phone tilts, gravity pulls one weight harder than another.\n\n"
+        "Your phone reads these tiny movements and does some math. "
+        "If the down-pull on the bottom sensor is stronger than the top, you are holding the phone upright.\n\n"
+        "And that is how your phone knows which way is up. "
+        "No magic. Just a few milligrams of silicon, listening to gravity."
+    ),
+
+    "channel-a/bread-stale": (
+        "Why does bread go stale but crackers don't?\n\n"
+        "Both are made from the same stuff. Flour, water, maybe a little yeast or oil. "
+        "So why does bread turn into a rock after two days, while crackers stay crunchy for months?\n\n"
+        "The answer is starch. Starch molecules in flour come packed like tiny crystals. "
+        "When you add water and heat, those crystals melt into a gel — soft, fluffy bread.\n\n"
+        "Over time, the water in the bread migrates out of the gel and the starch re-crystallises. "
+        "That is retrogradation. The bread goes stale.\n\n"
+        "Crackers have almost no water. They start crunchy and stay that way because there is not enough moisture "
+        "for the starch to change structure. Put a cracker in a humid room and it goes soft too. "
+        "The reverse of stale.\n\n"
+        "So the secret is water. More water makes bread, makes it go stale, and also makes stale bread "
+        "miraculously fresh again for thirty seconds in a toaster."
+    ),
+
+    "channel-a/barcode-scanner": (
+        "How do barcode scanners read upside-down barcodes?\n\n"
+        "A barcode is just a series of black and white lines. "
+        "Each digit is represented by a unique pattern of seven lines. "
+        "But how does the scanner know which end is up?\n\n"
+        "The secret is in the start, middle, and end markers. "
+        "Every barcode has a specific pattern at each end. "
+        "The scanner reads left to right. If the left end marker is on the right side, "
+        "the scanner knows the code is upside down or backwards.\n\n"
+        "And here is the clever part. The digits on the left side of the barcode use a different pattern "
+        "than the digits on the right. It is called parity encoding. "
+        "The scanner can tell from the pattern alone whether it is reading the left half or the right half.\n\n"
+        "So if you scan a barcode upside down, the scanner reads the right-side pattern first, "
+        "realizes it is reading the mirror, and reverses the whole thing. "
+        "It all happens in milliseconds.\n\n"
+        "Next time you check out at the shop, you are watching a tiny, invisible, lightning-fast conversation "
+        "between laser beams and black ink."
+    ),
+
+    # Channel B — "AI Pals for Kids"
+    "channel-b/computers-learn": (
+        "How do computers learn?\n\n"
+        "When you learn something new, you practice. "
+        "When you get it wrong, your brain says, 'Remember that. Do it differently.'\n\n"
+        "A computer learns the exact same way. Just a lot faster and with fewer snack breaks.\n\n"
+        "First we give the computer lots of examples. "
+        "Thousands of pictures of cats and dogs, so it can learn what makes them different. "
+        "Each time the computer guesses wrong, a little signal goes back and says, 'Try again.' "
+        "And very slowly, the computer gets better.\n\n"
+        "This is called training. It is like homework for computers. "
+        "Except the computer does not get bored. It can look at a million pictures and say, "
+        "'Yep, that is a cat,' every single time.\n\n"
+        "Once training is done, the computer can look at a picture it has never seen before "
+        "and know what it is. Not because it is magic. Because it practiced."
+    ),
+
+    "channel-b/where-ai-lives": (
+        "Where does AI live?\n\n"
+        "You ask your phone a question and immediately get an answer. "
+        "But where did that answer come from?\n\n"
+        "The AI that answered you does not live inside your phone. "
+        "It lives in a giant building full of computers. Those places are called data centers.\n\n"
+        "Inside a data center, thousands of computers are stacked on top of each other. "
+        "They are all connected. They run all day and all night. "
+        "When you ask a question, your phone sends it through the internet to the data center. "
+        "The computers there find the answer and send it back. "
+        "That whole trip takes less than a second.\n\n"
+        "Some data centers are the size of a football stadium. "
+        "They need so much electricity that they have their own power plants. "
+        "And they make a lot of noise too. All those fans, keeping the computers cool.\n\n"
+        "So your invisible friend lives in a noisy, giant, power-hungry building far away. "
+        "And you talk to it through a wire."
+    ),
+}

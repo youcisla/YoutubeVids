@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=1920, height=1080">
+<title>Why does bread go stale but crackers don't?</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face{font-family:'Fraunces';src:local('Fraunces'),local('Fraunces-Regular');}
+:root{--bg:#0E1418;--surface:#1A232B;--text:#F0F4F8;--text-dim:#94A3B8;--teal:#4FD1C5;--amber:#F6AD55;--grid:rgba(79,209,197,0.08);}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg);font-family:"Inter",sans-serif;color:var(--text);}
+.display{font-family:"Fraunces","EB Garamond",Georgia,serif;font-weight:500;}
+.mono{font-family:"JetBrains Mono",monospace;}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:80px 80px;z-index:0;}
+.bg-vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 40%,var(--bg) 90%);z-index:1;}
+.brand{position:absolute;top:48px;right:64px;font-size:18px;font-weight:600;letter-spacing:0.15em;color:var(--text-dim);text-transform:uppercase;z-index:100;opacity:0.5;}
+.brand .dot{display:inline-block;width:8px;height:8px;background:var(--teal);border-radius:50%;margin-right:10px;box-shadow:0 0 12px rgba(79,209,197,0.4);}
+.scene{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:140px 100px 180px;}
+.clip{visibility:hidden;}
+.caption-bar{position:absolute;left:0;right:0;bottom:80px;z-index:50;display:flex;justify-content:center;padding:0 80px;}
+.caption-pill{background:rgba(14,20,24,0.92);border:1px solid rgba(79,209,197,0.25);border-radius:4px;padding:16px 28px;max-width:1400px;font-size:28px;line-height:1.3;font-weight:500;text-align:center;color:var(--text);backdrop-filter:blur(8px);box-shadow:0 8px 32px rgba(0,0,0,0.4);}
+.hook{font-size:90px;line-height:1.05;text-align:center;max-width:1400px;}
+.hook .hl{color:var(--teal);}
+.txt{font-size:44px;line-height:1.2;text-align:center;max-width:1300px;font-weight:400;}
+.txt .hl{color:var(--teal);}
+.txt .am{color:var(--amber);}
+.outro{font-size:76px;line-height:1.1;text-align:center;max-width:1300px;}
+.cta{margin-top:48px;font-size:24px;color:var(--text-dim);}
+.emoji{font-size:180px;margin-bottom:32px;}
+.center-box{display:flex;flex-direction:column;align-items:center;gap:32px;}
+audio{display:none;}
+</style></head>
+<body>
+<div id="main" data-composition-id="main" data-start="0" data-duration="60" data-width="1920" data-height="1080" style="position:absolute;inset:0;">
+<audio id="narration" src="narration.mp3" data-start="0" data-duration="60.0"></audio>
+<div class="bg-grid"></div><div class="bg-vignette"></div>
+<div class="brand"><span class="dot"></span>HOW IT WORKS</div>
+
+<div class="scene clip" id="s1" data-start="0" data-duration="5" data-track-index="1">
+  <div class="hook display">Why does <span class="hl">bread</span> go stale<br/>but <span class="hl">crackers</span> don't?</div>
+</div>
+
+<div class="scene clip" id="s2" data-start="5" data-duration="6" data-track-index="1">
+  <div class="center-box">
+    <div class="emoji">🌾🍞🥖</div>
+    <div class="txt">Both are made from the <span class="hl">same stuff</span>.<br/>Flour, water, maybe yeast or oil.</div>
+  </div>
+</div>
+
+<div class="scene clip" id="s3" data-start="11" data-duration="8" data-track-index="1">
+  <div class="center-box">
+    <div class="emoji">🔬</div>
+    <div class="txt">The secret is <span class="hl">starch</span>.<br/>Starch molecules start packed like tiny <span class="am">crystals</span>.<br/>Heat + water melts them into a soft <span class="hl">gel</span>.</div>
+  </div>
+</div>
+
+<div class="scene clip" id="s4" data-start="19" data-duration="8" data-track-index="1">
+  <div class="center-box">
+    <div class="emoji">🧊</div>
+    <div class="txt">Over time, water leaves the gel.<br/>Starch <span class="am">re-crystallises</span> — that's <span class="hl">retrogradation</span>.<br/>Bread goes <span class="am">stale</span>.</div>
+  </div>
+</div>
+
+<div class="scene clip" id="s5" data-start="27" data-duration="8" data-track-index="1">
+  <div class="center-box">
+    <div class="emoji">🍘</div>
+    <div class="txt">Crackers have almost <span class="hl">no water</span>.<br/>They start crunchy and <span class="am">stay</span> that way.<br/>No moisture = no starch change.</div>
+  </div>
+</div>
+
+<div class="scene clip" id="s6" data-start="35" data-duration="8" data-track-index="1">
+  <div class="center-box">
+    <div class="emoji">💧→🌡️</div>
+    <div class="txt">Put a cracker in a <span class="hl">humid room</span>?<br/>It goes <span class="am">soft</span>.<br/>The <span class="hl">reverse</span> of stale.</div>
+  </div>
+</div>
+
+<div class="scene clip" id="s7" data-start="43" data-duration="8" data-track-index="1">
+  <div class="center-box">
+    <div class="emoji">🍞✨</div>
+    <div class="txt">Stale bread → <span class="hl">toaster</span> = miracle.<br/>The heat melts the starch crystals <span class="am">again</span>.<br/>Thirty seconds of <span class="hl">magic</span>.</div>
+  </div>
+</div>
+
+<div class="scene clip" id="s8" data-start="51" data-duration="9" data-track-index="1">
+  <div class="display" style="font-size:68px;text-align:center;max-width:1300px;line-height:1.15;">
+    The secret is <span class="hl">water</span>.<br/>
+    <span style="color:var(--text-dim);font-size:48px;font-weight:400;">It makes bread. It makes it stale.<br/>
+    And it makes it <span class="hl">fresh again</span>.</span>
+  </div>
+  <div class="cta">That's your minute of science for today.</div>
+</div>
+
+<div class="caption-bar" data-track-index="2"><div class="caption-pill" id="caption-text"></div></div>
+</div>
+<script>
+window.__timelines=window.__timelines||{};const tl=gsap.timeline({paused:true});
+const s=[{id:"s1",a:0,b:5},{id:"s2",a:5,b:11},{id:"s3",a:11,b:19},{id:"s4",a:19,b:27},{id:"s5",a:27,b:35},{id:"s6",a:35,b:43},{id:"s7",a:43,b:51},{id:"s8",a:51,b:60}];
+s.forEach(x=>{tl.set('[data-composition-id="main"]#'+x.id,{opacity:0},0);tl.to('[data-composition-id="main"]#'+x.id,{opacity:1,duration:0.5},x.a+0.1);tl.to('[data-composition-id="main"]#'+x.id,{opacity:0,duration:0.3},x.b-0.3);});
+
+const cues=[{"id":0,"start":0.4,"end":3.5,"text":"Why does bread go stale but crackers don't?"},{"id":1,"start":3.5,"end":7.2,"text":"Both are made from the same stuff."},{"id":2,"start":7.2,"end":10.5,"text":"Flour, water, maybe a little yeast or oil."},{"id":3,"start":10.5,"end":14.0,"text":"So why does bread turn into a rock after two days?"},{"id":4,"start":14.0,"end":17.2,"text":"While crackers stay crunchy for months?"},{"id":5,"start":17.2,"end":21.0,"text":"The answer is starch."},{"id":6,"start":21.0,"end":25.0,"text":"Starch molecules in flour come packed like tiny crystals."},{"id":7,"start":25.0,"end":29.0,"text":"When you add water and heat, those crystals melt into a gel — soft, fluffy bread."},{"id":8,"start":29.0,"end":33.0,"text":"Over time, the water in the bread migrates out of the gel."},{"id":9,"start":33.0,"end":36.5,"text":"And the starch re-crystallises. That is retrogradation."},{"id":10,"start":36.5,"end":39.5,"text":"The bread goes stale."},{"id":11,"start":39.5,"end":43.0,"text":"Crackers have almost no water. They start crunchy and stay that way."},{"id":12,"start":43.0,"end":47.0,"text":"There is not enough moisture for the starch to change structure."},{"id":13,"start":47.0,"end":51.0,"text":"Put a cracker in a humid room and it goes soft too. The reverse of stale."},{"id":14,"start":51.0,"end":55.0,"text":"So the secret is water."},{"id":15,"start":55.0,"end":60.0,"text":"And that is why stale bread gets miraculously fresh again for thirty seconds in a toaster."}];
+const ce=document.getElementById("caption-text");const cb=document.querySelector('[data-composition-id="main"] .caption-bar');
+tl.set(cb,{opacity:0},0);
+cues.forEach(c=>{tl.set(ce,{textContent:c.text},c.start);tl.set(cb,{opacity:1},c.start);tl.set(cb,{opacity:0},c.end-0.05);});
+window.__timelines["main"]=tl;
+</script></body></html>

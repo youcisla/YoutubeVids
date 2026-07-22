@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=1920, height=1080">
+<title>Where does AI live?</title>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+<style>
+@font-face{font-family:'Quicksand';src:local('Quicksand'),local('Quicksand-Bold');}
+@font-face{font-family:'Nunito';src:local('Nunito'),local('Nunito-Bold');}
+:root{--bg:#FFF8E7;--surface:#FFFFFF;--surface-2:#F5E9C8;--text:#1A1A1A;--text-dim:#5A4E3F;--coral:#E85050;--sky:#3AB0A8;--sun:#FFE66D;--outline:#1A1A1A;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg);font-family:"Nunito","Quicksand",system-ui,sans-serif;color:var(--text);font-weight:700;}
+.display{font-family:"Quicksand","Nunito",system-ui,sans-serif;font-weight:700;letter-spacing:-0.01em;}
+.bg-pattern{position:absolute;inset:0;background-image:radial-gradient(circle at 10% 20%,var(--sun) 0%,transparent 8%),radial-gradient(circle at 90% 80%,var(--sky) 0%,transparent 12%),radial-gradient(circle at 50% 50%,var(--coral) 0%,transparent 6%);opacity:0.18;z-index:0;}
+.brand{position:absolute;top:48px;right:64px;font-size:22px;font-weight:800;color:var(--coral);z-index:100;}
+.scene{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:200px 80px 180px;}
+.clip{visibility:hidden;}
+.caption-bar{position:absolute;left:0;right:0;bottom:60px;z-index:50;display:flex;justify-content:center;padding:0 80px;}
+.caption-pill{background:rgba(255,255,255,0.95);border:5px solid var(--outline);border-radius:24px;padding:20px 36px;max-width:1500px;font-size:42px;line-height:1.25;font-weight:800;text-align:center;color:var(--text);box-shadow:0 6px 0 rgba(0,0,0,0.1);}
+.hook{font-size:120px;line-height:1.0;text-align:center;}
+.hook .q{color:var(--coral);}
+.content{font-size:48px;line-height:1.15;text-align:center;max-width:1300px;}
+.content .hl{display:inline-block;padding:0 12px;border-radius:8px;}
+.content .hl-coral{background:var(--coral);color:white;}
+.content .hl-sky{background:var(--sky);color:white;}
+.content .hl-sun{background:var(--sun);}
+.emoji-big{font-size:140px;margin-bottom:24px;}
+.card{background:white;border:6px solid var(--outline);border-radius:24px;padding:48px 64px;max-width:1200px;box-shadow:0 8px 0 rgba(0,0,0,0.1);text-align:center;}
+.card-text{font-size:40px;line-height:1.25;}
+.card-text .hi{background:var(--sun);padding:0 12px;border-radius:8px;}
+audio{display:none;}
+</style></head>
+<body>
+<div id="main" data-composition-id="main" data-start="0" data-duration="38" data-width="1920" data-height="1080" style="position:absolute;inset:0;">
+<audio id="narration" src="narration.mp3" data-start="0" data-duration="36.5"></audio>
+<div class="bg-pattern"></div>
+<div class="brand">AI Pals ✨</div>
+
+<div class="scene clip" id="s1" data-start="0" data-duration="4" data-track-index="1">
+  <div class="hook display">Where does <span class="q">AI</span> live?</div>
+</div>
+
+<div class="scene clip" id="s2" data-start="4" data-duration="5" data-track-index="1">
+  <div class="emoji-big">📱➡️💬</div>
+  <div class="content">You ask your phone a question.<br/>Instantly an answer comes back.<br/>But where did it <span class="hl hl-coral">really</span> come from?</div>
+</div>
+
+<div class="scene clip" id="s3" data-start="9" data-duration="6" data-track-index="1">
+  <div class="emoji-big">🏢</div>
+  <div class="content">AI does not live <span class="hl hl-sky">inside your phone</span>.<br/>It lives in a <span class="hl hl-coral">giant building</span><br/>full of computers. Called a <span class="hl hl-sun">data center</span>.</div>
+</div>
+
+<div class="scene clip" id="s4" data-start="15" data-duration="6" data-track-index="1">
+  <div class="emoji-big">🖥️🖥️🖥️</div>
+  <div class="content">Thousands of computers,<br/>stacked on top of each other.<br/><span class="hl hl-coral">All connected</span>. Running all day and night.</div>
+</div>
+
+<div class="scene clip" id="s5" data-start="21" data-duration="6" data-track-index="1">
+  <div class="content">Your question travels through the <span class="hl hl-sky">internet</span><br/>to the data center. The computers find<br/>the answer and send it <span class="hl hl-coral">back</span> —<br/>in <span class="hl hl-sun">under a second</span>.</div>
+</div>
+
+<div class="scene clip" id="s6" data-start="27" data-duration="6" data-track-index="1">
+  <div class="content">Some data centers are the size of a<br/><span class="hl hl-coral">football stadium</span>. They need so much<br/>electricity they have their own <span class="hl hl-sun">power plants</span>.</div>
+</div>
+
+<div class="scene clip" id="s7" data-start="33" data-duration="5" data-track-index="1">
+  <div class="card"><div class="card-text">Your invisible AI friend<br/>lives in a noisy, giant,<br/><span class="hi">power-hungry building</span> far away.<br/>And you talk to it through a <span class="hi">wire</span>.</div></div>
+</div>
+
+<div class="caption-bar" data-track-index="2"><div class="caption-pill" id="caption-text"></div></div>
+</div>
+<script>
+window.__timelines=window.__timelines||{};const tl=gsap.timeline({paused:true});
+const s=[{id:"s1",a:0,b:4},{id:"s2",a:4,b:9},{id:"s3",a:9,b:15},{id:"s4",a:15,b:21},{id:"s5",a:21,b:27},{id:"s6",a:27,b:33},{id:"s7",a:33,b:38}];
+s.forEach(x=>{tl.set('[data-composition-id="main"]#'+x.id,{opacity:0},0);tl.to('[data-composition-id="main"]#'+x.id,{opacity:1,duration:0.5},x.a+0.1);tl.to('[data-composition-id="main"]#'+x.id,{opacity:0,duration:0.3},x.b-0.3);});
+const cues=[{"id":0,"start":0.4,"end":2.0,"text":"Where does AI live?"},{"id":1,"start":2.0,"end":5.5,"text":"You ask your phone a question and immediately get an answer."},{"id":2,"start":5.5,"end":9.0,"text":"But where did that answer come from?"},{"id":3,"start":9.0,"end":13.0,"text":"The AI that answered you does not live inside your phone."},{"id":4,"start":13.0,"end":17.0,"text":"It lives in a giant building full of computers. Those places are called data centers."},{"id":5,"start":17.0,"end":21.0,"text":"Inside a data center, thousands of computers are stacked on top of each other."},{"id":6,"start":21.0,"end":24.5,"text":"They are all connected. They run all day and all night."},{"id":7,"start":24.5,"end":28.0,"text":"When you ask a question, your phone sends it through the internet to the data center."},{"id":8,"start":28.0,"end":31.5,"text":"The computers there find the answer and send it back. That whole trip takes less than a second."},{"id":9,"start":31.5,"end":34.5,"text":"Some data centers are the size of a football stadium."},{"id":10,"start":34.5,"end":37.0,"text":"Your invisible friend lives in a noisy, giant, power-hungry building far away."}];
+const ce=document.getElementById("caption-text");const cb=document.querySelector('[data-composition-id="main"] .caption-bar');
+tl.set(cb,{opacity:0},0);
+cues.forEach(c=>{tl.set(ce,{textContent:c.text},c.start);tl.set(cb,{opacity:1},c.start);tl.set(cb,{opacity:0},c.end-0.05);});
+window.__timelines["main"]=tl;
+</script></body></html>

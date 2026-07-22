@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+*.mp4
+*.wav
+*.mp3
+*.ogg
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Scene renders (generated per-scene MP4s)
+scenes/scene_*/
+!scenes/scene_*/captions.srt
+!scenes/scene_*/index.html
+scenes/scene_*/captions.ass
+scenes/scene_*/vf.txt
+scenes/scene_*/gsap.min.js
+scenes/scene_*/cover.svg
+scenes/scene_*/test_out.mp4
+
+# Scene generation scripts (already tracked)
+!scenes/generate.js
+!scenes/write_scenes.js
+!scenes/burn_subs*.py
+!scenes/burn_subs.bat
+!scenes/burn_subs.ps1
+!scenes/scene_base.html
+
+# Vendor files (vendored for reproducibility but not tracked)
+vendor/
+
+# Temp files
+*.tmp
+*.log
+*.srt.bak
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

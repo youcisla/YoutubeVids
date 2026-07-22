@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>How does your phone know which way is up?</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: 'Fraunces';
+        src: local('Fraunces'), local('Fraunces-Regular');
+      }
+      :root {
+        --bg: #0E1418;
+        --surface: #1A232B;
+        --surface-2: #243038;
+        --text: #F0F4F8;
+        --text-dim: #94A3B8;
+        --teal: #4FD1C5;
+        --teal-glow: rgba(79, 209, 197, 0.4);
+        --amber: #F6AD55;
+        --amber-glow: rgba(246, 173, 85, 0.4);
+        --grid: rgba(79, 209, 197, 0.08);
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--bg);
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        color: var(--text);
+      }
+      .display {
+        font-family: "Fraunces", "EB Garamond", Georgia, serif;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+      }
+      .mono {
+        font-family: "JetBrains Mono", "SF Mono", monospace;
+      }
+
+      /* === Background grid === */
+      .bg-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(var(--grid) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+        background-size: 80px 80px;
+        z-index: 0;
+      }
+      .bg-vignette {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at center, transparent 30%, var(--bg) 90%);
+        z-index: 1;
+      }
+
+      /* === Lower-third caption === */
+      .caption-bar {
+        position: absolute;
+        left: 0; right: 0; bottom: 80px;
+        z-index: 50;
+        display: flex; justify-content: center;
+        padding: 0 80px;
+        opacity: 0;
+      }
+      .caption-pill {
+        background: rgba(14, 20, 24, 0.92);
+        border: 1px solid rgba(79, 209, 197, 0.25);
+        border-radius: 4px;
+        padding: 18px 32px;
+        max-width: 1400px;
+        font-size: 30px;
+        line-height: 1.35;
+        font-weight: 500;
+        text-align: center;
+        color: var(--text);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      }
+
+      /* === Brand mark === */
+      .brand {
+        position: absolute;
+        top: 48px;
+        right: 64px;
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        z-index: 100;
+        opacity: 0.5;
+      }
+      .brand .dot {
+        display: inline-block;
+        width: 8px; height: 8px;
+        background: var(--teal);
+        border-radius: 50%;
+        margin-right: 10px;
+        vertical-align: middle;
+        box-shadow: 0 0 12px var(--teal-glow);
+      }
+
+      /* === Scene containers (HyperFrames uses .clip for visibility) === */
+      .scene {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 120px 100px 200px;
+      }
+      .clip {
+        visibility: hidden;
+      }
+
+      /* === Scene 1: Hook === */
+      .hook-title {
+        font-size: 110px;
+        line-height: 1.05;
+        text-align: center;
+        max-width: 1400px;
+        color: var(--text);
+      }
+      .hook-title .accent {
+        color: var(--teal);
+        position: relative;
+      }
+      .hook-title .accent::after {
+        content: '';
+        position: absolute;
+        left: -8px; right: -8px; bottom: 6px;
+        height: 12px;
+        background: var(--teal-glow);
+        z-index: -1;
+      }
+      .hook-sub {
+        margin-top: 32px;
+        font-size: 26px;
+        color: var(--text-dim);
+        font-style: italic;
+      }
+
+      /* === Scene 2: Phone === */
+      .phone-stage {
+        position: relative;
+        width: 600px; height: 600px;
+        display: flex; justify-content: center; align-items: center;
+      }
+      .phone {
+        width: 220px; height: 440px;
+        background: var(--surface);
+        border: 4px solid var(--surface-2);
+        border-radius: 32px;
+        position: relative;
+        box-shadow:
+          0 0 0 1px rgba(79, 209, 197, 0.15),
+          0 30px 80px rgba(0, 0, 0, 0.6),
+          inset 0 0 0 2px rgba(0, 0, 0, 0.5);
+      }
+      .phone::before {
+        content: '';
+        position: absolute;
+        top: 24px; left: 50%; transform: translateX(-50%);
+        width: 80px; height: 8px;
+        background: var(--surface-2);
+        border-radius: 4px;
+      }
+      .phone-screen {
+        position: absolute;
+        top: 56px; left: 12px; right: 12px; bottom: 12px;
+        background: linear-gradient(180deg, #2D3748 0%, #1A202C 100%);
+        border-radius: 22px;
+      }
+      .sensor {
+        position: absolute;
+        width: 12px; height: 12px;
+        background: var(--teal);
+        border-radius: 50%;
+        box-shadow: 0 0 16px var(--teal-glow);
+      }
+      .sensor-label {
+        position: absolute;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 14px;
+        color: var(--teal);
+        white-space: nowrap;
+      }
+
+      /* === Scene 3: Accelerometer chip === */
+      .chip-stage {
+        position: relative;
+        width: 700px; height: 500px;
+        display: flex; justify-content: center; align-items: center;
+      }
+      .chip {
+        width: 380px; height: 240px;
+        background: linear-gradient(135deg, #1A232B 0%, #243038 100%);
+        border: 2px solid var(--teal);
+        border-radius: 8px;
+        position: relative;
+        box-shadow:
+          0 0 60px var(--teal-glow),
+          inset 0 0 30px rgba(79, 209, 197, 0.05);
+      }
+      .chip-pins {
+        position: absolute;
+        top: -16px; left: 24px; right: 24px;
+        display: flex; justify-content: space-between;
+      }
+      .chip-pin {
+        width: 6px; height: 16px;
+        background: var(--text-dim);
+        border-radius: 2px 2px 0 0;
+      }
+      .chip-pins-bottom {
+        top: auto; bottom: -16px;
+      }
+      .chip-pins-bottom .chip-pin {
+        border-radius: 0 0 2px 2px;
+      }
+      .chip-label {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+      }
+      .chip-name {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 16px;
+        color: var(--teal);
+        letter-spacing: 0.2em;
+      }
+      .chip-size {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        color: var(--text-dim);
+      }
+
+      /* === Scene 4: Three weights on springs === */
+      .spring-stage {
+        position: relative;
+        width: 1000px; height: 600px;
+        display: flex; justify-content: space-around; align-items: center;
+      }
+      .spring-box {
+        width: 220px; height: 480px;
+        background: var(--surface);
+        border: 2px solid var(--surface-2);
+        border-radius: 16px;
+        position: relative;
+        display: flex; justify-content: center;
+        padding-top: 30px;
+      }
+      .spring-box::before {
+        content: attr(data-axis);
+        position: absolute;
+        top: -32px; left: 50%; transform: translateX(-50%);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 22px;
+        color: var(--teal);
+        letter-spacing: 0.15em;
+      }
+      .spring {
+        width: 100px; height: 240px;
+        position: relative;
+      }
+      .spring-top {
+        position: absolute;
+        top: 0; left: 50%; transform: translateX(-50%);
+        width: 60px; height: 8px;
+        background: var(--text-dim);
+        border-radius: 4px;
+      }
+      .spring-coil {
+        position: absolute;
+        top: 14px; left: 50%; transform: translateX(-50%);
+        width: 16px; height: 200px;
+        background-image: repeating-linear-gradient(
+          180deg,
+          var(--text-dim) 0,
+          var(--text-dim) 4px,
+          transparent 4px,
+          transparent 12px
+        );
+      }
+      .spring-weight {
+        /* No CSS transform — GSAP controls xPercent:-50 for centering */
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 80px; height: 80px;
+        background: linear-gradient(135deg, var(--teal) 0%, #2C8A82 100%);
+        border-radius: 8px;
+        box-shadow: 0 8px 24px var(--teal-glow), inset 0 -4px 0 rgba(0,0,0,0.3);
+        margin-left: 10px; /* visual centering since no transform */
+      }
+
+      /* === Scene 5: Tilted phone + gravity arrow === */
+      .tilt-stage {
+        position: relative;
+        width: 700px; height: 600px;
+        display: flex; justify-content: center; align-items: center;
+      }
+      .tilted-phone {
+        width: 240px; height: 480px;
+        background: var(--surface);
+        border: 4px solid var(--surface-2);
+        border-radius: 32px;
+        position: relative;
+        transform: rotate(-25deg);
+        box-shadow:
+          0 0 0 1px rgba(79, 209, 197, 0.15),
+          0 30px 80px rgba(0, 0, 0, 0.6);
+      }
+      .tilted-phone::after {
+        content: '';
+        position: absolute;
+        top: 56px; left: 12px; right: 12px; bottom: 12px;
+        background: linear-gradient(180deg, #2D3748 0%, #1A202C 100%);
+        border-radius: 22px;
+      }
+      .gravity-arrow {
+        position: absolute;
+        top: 100px;
+        left: 50%; transform: translateX(-50%) rotate(25deg);
+        transform-origin: top center;
+        width: 8px; height: 350px;
+        background: linear-gradient(180deg, transparent 0%, var(--amber) 50%, var(--amber) 100%);
+        border-radius: 4px;
+        box-shadow: 0 0 30px var(--amber-glow);
+      }
+      .gravity-arrow::after {
+        content: '';
+        position: absolute;
+        bottom: -2px; left: 50%; transform: translateX(-50%);
+        width: 0; height: 0;
+        border-left: 20px solid transparent;
+        border-right: 20px solid transparent;
+        border-top: 30px solid var(--amber);
+      }
+      .gravity-label {
+              position: absolute;
+              top: 30px;
+              left: 50%; transform: translateX(-50%) rotate(25deg);
+              font-family: "JetBrains Mono", monospace;
+              font-size: 18px;
+              color: var(--amber);
+              white-space: nowrap;
+              font-weight: 600;
+              z-index: 10;
+            }
+
+      /* === Scene 6: Math + readout === */
+      .readout-stage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 48px;
+      }
+      .equation {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 42px;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .equation .op { color: var(--teal); }
+      .equation .val { color: var(--amber); }
+      .readout {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 24px;
+        color: var(--text-dim);
+      }
+      .readout .num {
+        color: var(--teal);
+        font-weight: 700;
+        font-size: 32px;
+      }
+
+      /* === Scene 7: Outro === */
+      .outro-tagline {
+        font-size: 88px;
+        line-height: 1.1;
+        text-align: center;
+        max-width: 1300px;
+      }
+      .outro-tagline .strike {
+        position: relative;
+        display: inline-block;
+      }
+      .outro-tagline .strike::after {
+        content: '';
+        position: absolute;
+        left: -4px; right: -4px;
+        top: 50%;
+        height: 6px;
+        background: var(--amber);
+        transform: rotate(-8deg);
+        opacity: 0.85;
+      }
+      .outro-cta {
+        margin-top: 60px;
+        font-size: 28px;
+        color: var(--text-dim);
+        letter-spacing: 0.05em;
+      }
+      .outro-cta .accent {
+        color: var(--teal);
+        font-weight: 600;
+      }
+
+      audio { display: none; }
+    </style>
+  </head>
+  <body>
+    <div id="main" data-composition-id="main" data-start="0" data-duration="52" data-width="1920" data-height="1080" style="position: absolute; inset: 0;">
+          <audio id="narration" src="narration.mp3" data-start="0" data-duration="50.66"></audio>
+
+          <div class="bg-grid"></div>
+          <div class="bg-vignette"></div>
+
+          <div class="brand"><span class="dot"></span>HOW IT WORKS</div>
+
+          <div class="clip" id="title-overlay" data-start="0" data-duration="5" data-track-index="0">
+            <div style="position: absolute; top: 120px; left: 100px; z-index: 60;">
+              <div class="mono" style="font-size: 16px; color: var(--teal); letter-spacing: 0.2em; margin-bottom: 8px;">EPISODE 01</div>
+              <div class="display" style="font-size: 32px; color: var(--text); font-weight: 400;">How does your phone know which way is up?</div>
+            </div>
+          </div>
+
+      <div class="scene clip" id="scene-1-hook" data-start="0" data-duration="5" data-track-index="1">
+        <div class="hook-title display">
+          How does your phone<br/>
+          know which way is <span class="accent">up</span>?
+        </div>
+        <div class="hook-sub">A 60-second tour of the smallest sensor you own.</div>
+      </div>
+
+      <div class="scene clip" id="scene-2-phone" data-start="5" data-duration="7" data-track-index="1">
+        <div class="phone-stage">
+          <div class="phone">
+            <div class="phone-screen"></div>
+          </div>
+          <div class="sensor" style="top: 70px; left: 50%; transform: translateX(-50%);"></div>
+          <div class="sensor-label" style="top: 95px; left: 50%; transform: translateX(-50%);">accelerometer</div>
+        </div>
+      </div>
+
+      <div class="scene clip" id="scene-3-chip" data-start="12" data-duration="7" data-track-index="1">
+        <div class="chip-stage">
+          <div class="chip">
+            <div class="chip-pins">
+              <div class="chip-pin"></div><div class="chip-pin"></div><div class="chip-pin"></div>
+              <div class="chip-pin"></div><div class="chip-pin"></div><div class="chip-pin"></div>
+              <div class="chip-pin"></div><div class="chip-pin"></div><div class="chip-pin"></div>
+            </div>
+            <div class="chip-pins chip-pins-bottom">
+              <div class="chip-pin"></div><div class="chip-pin"></div><div class="chip-pin"></div>
+              <div class="chip-pin"></div><div class="chip-pin"></div><div class="chip-pin"></div>
+              <div class="chip-pin"></div><div class="chip-pin"></div><div class="chip-pin"></div>
+            </div>
+            <div class="chip-label">
+              <div class="chip-name">MEMS ACCEL</div>
+              <div class="chip-size">3-axis · 14-bit · 1.5 × 1.5 mm</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene clip" id="scene-4-springs" data-start="19" data-duration="9" data-track-index="1">
+        <div class="spring-stage">
+          <div class="spring-box" data-axis="X-AXIS">
+            <div class="spring">
+              <div class="spring-top"></div>
+              <div class="spring-coil"></div>
+              <div class="spring-weight"></div>
+            </div>
+          </div>
+          <div class="spring-box" data-axis="Y-AXIS">
+            <div class="spring">
+              <div class="spring-top"></div>
+              <div class="spring-coil"></div>
+              <div class="spring-weight"></div>
+            </div>
+          </div>
+          <div class="spring-box" data-axis="Z-AXIS">
+            <div class="spring">
+              <div class="spring-top"></div>
+              <div class="spring-coil"></div>
+              <div class="spring-weight"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene clip" id="scene-5-tilt" data-start="28" data-duration="10" data-track-index="1">
+        <div class="tilt-stage">
+          <div class="gravity-label" data-layout-allow-occlusion="true">g = 9.8 m/s²</div>
+          <div class="tilted-phone"></div>
+          <div class="gravity-arrow"></div>
+        </div>
+      </div>
+
+      <div class="scene clip" id="scene-6-math" data-start="38" data-duration="8" data-track-index="1">
+        <div class="readout-stage">
+          <div class="equation">
+            <span class="val">F<sub>down</sub></span>
+            <span class="op">&gt;</span>
+            <span class="val">F<sub>up</sub></span>
+            <span class="op">→</span>
+            <span>phone upright</span>
+          </div>
+          <div class="readout">Sensor reading: <span class="num">x: 0.02 · y: −9.78 · z: 0.31</span></div>
+        </div>
+      </div>
+
+      <div class="scene clip" id="scene-7-outro" data-start="46" data-duration="6" data-track-index="1">
+        <div class="outro-tagline display">
+          <span class="strike">No magic.</span><br/>
+          Just a few milligrams of silicon,<br/>
+          listening to <span style="color: var(--teal);">gravity</span>.
+        </div>
+        <div class="outro-cta">Subscribe for the next <span class="accent">60-second tour</span>.</div>
+      </div>
+
+      <div class="clip" id="caption" data-start="0" data-duration="52" data-track-index="2">
+        <div class="caption-bar">
+          <div class="caption-pill" id="caption-text"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+          window.__timelines = window.__timelines || {};
+          const tl = gsap.timeline({ paused: true });
+
+          const scenes = [
+            { id: "title-overlay", start: 0, end: 5 },
+            { id: "scene-1-hook", start: 0, end: 5 },
+            { id: "scene-2-phone", start: 5, end: 12 },
+            { id: "scene-3-chip", start: 12, end: 19 },
+            { id: "scene-4-springs", start: 19, end: 28 },
+            { id: "scene-5-tilt", start: 28, end: 38 },
+            { id: "scene-6-math", start: 38, end: 46 },
+            { id: "scene-7-outro", start: 46, end: 52 },
+          ];
+
+          // Each scene fades in at its start, fades out at end
+          scenes.forEach(s => {
+            tl.from('[data-composition-id="main"] #' + s.id, { opacity: 0, duration: 0.6 }, s.start);
+            tl.to('[data-composition-id="main"] #' + s.id, { opacity: 0, duration: 0.6 }, s.end);
+          });
+
+          // Spring weight animations (scene 4)
+          tl.fromTo('[data-composition-id="main"] .spring-weight',
+            { y: -180 },
+            { y: 0, duration: 1.2, stagger: 0.15, ease: "bounce.out" },
+            19.5
+          );
+
+          // Idle wobble (subtle gravity motion)
+          tl.to('[data-composition-id="main"] [data-axis="X-AXIS"] .spring-weight', { x: -8, duration: 0.4, yoyo: true, repeat: 4 }, 21.5);
+          tl.to('[data-composition-id="main"] [data-axis="Z-AXIS"] .spring-weight', { y: 8, duration: 0.4, yoyo: true, repeat: 4 }, 22);
+          tl.to('[data-composition-id="main"] [data-axis="Y-AXIS"] .spring-weight', { y: 12, duration: 0.6, yoyo: true, repeat: 2 }, 22.5);
+
+          // Gravity arrow slide-in
+          tl.from('[data-composition-id="main"] .gravity-arrow', { scaleY: 0, transformOrigin: "top center", duration: 1.2, ease: "power2.out" }, 28.5);
+          tl.from('[data-composition-id="main"] .gravity-label', { opacity: 0, duration: 0.8 }, 29);
+
+          // Sensor pulsing
+          tl.to('[data-composition-id="main"] .sensor', { scale: 1.4, duration: 0.6, yoyo: true, repeat: 5, transformOrigin: "center" }, 5.5);
+
+          // Captions
+          const captions = {"duration": 50.664, "cues": [{"id": 0, "start": 0.4, "end": 3.161, "text": "How does your phone know which way is up?"}, {"id": 1, "start": 3.161, "end": 8.077, "text": "Inside your phone, there is a tiny sensor \u2014 smaller than a grain of rice."}, {"id": 2, "start": 8.077, "end": 10.03, "text": "It's called an accelerometer."}, {"id": 3, "start": 10.03, "end": 15.282, "text": "An accelerometer measures acceleration \u2014 including the one you feel right now."}, {"id": 4, "start": 15.282, "end": 16.782, "text": "Gravity."}, {"id": 5, "start": 16.782, "end": 21.294, "text": "About nine point eight meters per second squared, pulling you down."}, {"id": 6, "start": 21.294, "end": 24.257, "text": "The sensor has three tiny structures inside."}, {"id": 7, "start": 24.257, "end": 28.499, "text": "Each one can move a little \u2014 like a spring with a weight on it."}, {"id": 8, "start": 28.499, "end": 33.078, "text": "When your phone tilts, gravity pulls one weight harder than another."}, {"id": 9, "start": 33.078, "end": 36.917, "text": "Your phone reads these tiny movements and does some math."}, {"id": 10, "start": 36.917, "end": 42.917, "text": "If the down-pull on the bottom sensor is stronger than the top, you are holding the phone upright."}, {"id": 11, "start": 42.917, "end": 46.216, "text": "And that is how your phone knows which way is up."}, {"id": 12, "start": 46.216, "end": 47.716, "text": "No magic."}, {"id": 13, "start": 47.716, "end": 51.42, "text": "Just a few milligrams of silicon, listening to gravity."}]};
+          const capEl = document.getElementById("caption-text");
+          const capBar = document.querySelector('[data-composition-id="main"] .caption-bar');
+
+          tl.set(capBar, { opacity: 0 }, 0);
+          captions.cues.forEach(cue => {
+            tl.set(capEl, { textContent: cue.text }, cue.start);
+            tl.set(capBar, { opacity: 1 }, cue.start);
+            tl.set(capBar, { opacity: 0 }, cue.end - 0.05);
+          });
+
+          window.__timelines["main"] = tl;
+        </script>
+  </body>
+</html>
