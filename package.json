@@ -1,0 +1,15 @@
+{
+  "name": "edu-channel",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Faceless YouTube book summary video pipeline",
+  "scripts": {
+    "build:ch": "node build-chapter.js --book atomic-habits --chapter",
+    "build:batch": "node build-chapter.js --batch atomic-habits",
+    "lint": "npx hyperframes lint",
+    "validate": "npx hyperframes validate"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

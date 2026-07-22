@@ -49,7 +49,7 @@
 - `position: absolute; top: Npx; left: Npx` on text elements
 - `Math.random()` or `Date.now()` in timeline — use seeded PRNG only
 - `repeat: -1` — use finite calculated counts
-- CDN dependencies — vendor GSAP locally
+- CDN dependencies — use config.json `gsap_source` (change once, affects all renders)
 - Default linear easing — always use `power4.out` / `expo.out`
 - `<br>` in body text — use block elements
 - Common sans-serif fallbacks — always specify Space Grotesk + Inter
