@@ -1,0 +1,140 @@
+{
+  "book_title": "Atomic Habits",
+  "cover_ext": "svg",
+  "chapter": 9,
+  "chapter_title": "The Role of Family and Friends",
+  "narration_script": "We imitate the habits of three groups. The close, the many, and the powerful. One of the most effective things you can do to build better habits is to join a culture where your desired behavior is the normal behavior. If you are surrounded by people who exercise you are more likely to exercise. If you are surrounded by people who read you are more likely to read. The shared identity of a group reinforces individual habits. This is why gyms work and book clubs work. You do not want to let the group down.",
+  "scene_count": 4,
+  "scenes": [
+    {
+      "index": 0,
+      "timestamp_end": 20,
+      "duration": 26,
+      "narration_text": "We imitate the habits of three groups. The close, the many, and the powerful. One of the most effective things you can do to build better habits is to join a culture where your desired behavior is the normal behavior. If you are surrounded by people who exercise you are more likely to exercise. If you are surrounded by people who read you are more likely to read.",
+      "html": "<div class=\"scene\" id=\"s0\"><div class=\"scene-inner g1 cen\"><div class=\"cb\">Atomic Habits · Chapter</div><h1 class=\"h1\" style=\"margin-bottom:8px;max-width:1400px;\">The Role of Family and Friends</h1><div class=\"sd cen\"></div><div class=\"bt cen\" style=\"font-size:48px;font-weight:400;\"><span class=\"hl\">We imitate <span style='color:#FACC15;'>the close, the many, the powerful</span></span></div></div></div>",
+      "animations": "tl.from(R+' .cb',{opacity:0,y:-20,duration:0.8,ease:'power4.out'},0.3);tl.from(R+' h1',{opacity:0,y:40,scale:0.98,duration:1.2,ease:'power4.out'},0.6);tl.from(R+' .sd',{scaleX:0,transformOrigin:'center',duration:0.8,ease:'power4.out'},1.3);tl.from(R+' .bt',{opacity:0,y:20,duration:1,ease:'power4.out'},1.8);",
+      "captions": [
+        {
+          "start": 0,
+          "end": 6,
+          "text": "Habits are social"
+        },
+        {
+          "start": 7,
+          "end": 13,
+          "text": "Join a culture"
+        },
+        {
+          "start": 14,
+          "end": 20,
+          "text": "Where your behavior is normal"
+        },
+        {
+          "start": 21,
+          "end": 27,
+          "text": "Shared identity reinforces habits"
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "timestamp_end": 55,
+      "duration": 35,
+      "narration_text": "We imitate the habits of three groups. The close, the many, and the powerful. One of the most effective things you can do to build better habits is to join a culture where your desired behavior is the normal behavior. If you are surrounded by people who exercise you are more likely to exercise. If you are surrounded by people who read you are more likely to read.",
+      "html": "<div class=\"scene\" id=\"s1\"><div class=\"scene-inner g1 cen\" style=\"max-width:1200px;\"><div class=\"cb\">Atomic Habits · Key Insight</div><h2 class=\"h2\" style=\"font-size:64px;\">The <span style='color:#FACC15;'>principle</span></h2><div class=\"sd cen\"></div><div class=\"bt cen\" style=\"font-size:38px;\">We imitate the habits of three groups. The close, the many, and the powerful.</div><div class=\"bt dim cen\" style=\"font-size:32px;margin-top:20px;\">One of the most effective things you can do to build better habits is to join a culture where your desired behavior is the normal behavior. If you are surrounded by people who exercise you are more likely to exercise.</div></div></div>",
+      "animations": "tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.3);tl.from(R+' h2',{opacity:0,y:30,duration:1,ease:'power4.out'},0.5);tl.from(R+' .sd',{scaleX:0,transformOrigin:'center',duration:0.6,ease:'power4.out'},1.2);tl.from(R+' .bt',{opacity:0,y:20,duration:0.8,ease:'power4.out'},1.5);",
+      "captions": [
+        {
+          "start": 0,
+          "end": 8,
+          "text": "We imitate the habits of three groups"
+        },
+        {
+          "start": 8,
+          "end": 16,
+          "text": "The close, the many, and the powerful"
+        },
+        {
+          "start": 16,
+          "end": 25,
+          "text": "One of the most effective things you can do to build better habits is to join a culture where your desired behavior is the normal behavior"
+        },
+        {
+          "start": 25,
+          "end": 35,
+          "text": "If you are surrounded by people who exercise you are more likely to exercise"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "timestamp_end": 95,
+      "duration": 40,
+      "narration_text": "We imitate the habits of three groups. The close, the many, and the powerful. One of the most effective things you can do to build better habits is to join a culture where your desired behavior is the normal behavior. If you are surrounded by people who exercise you are more likely to exercise. If you are surrounded by people who read you are more likely to read.",
+      "html": "<div class=\"scene\" id=\"s2\"><div class=\"scene-inner g1 cen\" style=\"max-width:1200px;\"><div class=\"cb\">Atomic Habits · How to Apply It</div><h2 class=\"h2\" style=\"font-size:64px;\">Put it into <span style='color:#FACC15;'>practice</span></h2><div class=\"sd cen\"></div><div class=\"bt cen\" style=\"font-size:38px;\">The shared identity of a group reinforces individual habits. This is why gyms work and book clubs work. You do not want to let the group down..</div><div class=\"bt dim cen\" style=\"font-size:32px;margin-top:20px;\">.</div></div></div>",
+      "animations": "tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.3);tl.from(R+' h2',{opacity:0,y:30,duration:1,ease:'power4.out'},0.5);tl.from(R+' .sd',{scaleX:0,transformOrigin:'center',duration:0.6,ease:'power4.out'},1.2);tl.from(R+' .bt',{opacity:0,y:20,duration:0.8,ease:'power4.out'},1.5);",
+      "captions": [
+        {
+          "start": 0,
+          "end": 10,
+          "text": "The shared identity of a group reinforces individual habits. This is why gyms work and book clubs work"
+        },
+        {
+          "start": 10,
+          "end": 20,
+          "text": "You do not want to let the group down."
+        },
+        {
+          "start": 20,
+          "end": 30,
+          "text": ""
+        },
+        {
+          "start": 30,
+          "end": 40,
+          "text": "This is how you apply the principle"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "timestamp_end": 200,
+      "duration": 105,
+      "narration_text": "We imitate the habits of three groups. The close, the many, and the powerful. One of the most effective things you can do to build better habits is to join a culture where your desired behavior is the normal behavior. If you are surrounded by people who exercise you are more likely to exercise. If you are surrounded by people who read you are more likely to read.",
+      "html": "<div class=\"scene\" id=\"s3\"><div class=\"scene-inner g1 cen\" style=\"max-width:1100px;\"><div class=\"cb\">Atomic Habits · Chapter Summary</div><div style=\"display:flex;flex-direction:column;gap:20px;width:100%;\"><div class=\"card\" style=\"text-align:center;\"><div class=\"ct\" style=\"font-size:32px;\">1. Habits are social</div></div><div class=\"card\" style=\"text-align:center;\"><div class=\"ct\" style=\"font-size:32px;\">2. Join a culture</div></div><div class=\"card\" style=\"text-align:center;\"><div class=\"ct\" style=\"font-size:32px;\">3. Where your behavior is normal</div></div></div></div></div>",
+      "animations": "tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.3);tl.from(R+' .card',{opacity:0,y:20,duration:0.7,ease:'power4.out',stagger:0.15},0.8);",
+      "captions": [
+        {
+          "start": 0,
+          "end": 15,
+          "text": "Habits are social"
+        },
+        {
+          "start": 15,
+          "end": 30,
+          "text": "Join a culture"
+        },
+        {
+          "start": 30,
+          "end": 50,
+          "text": "Where your behavior is normal"
+        },
+        {
+          "start": 50,
+          "end": 70,
+          "text": "Shared identity reinforces habits"
+        },
+        {
+          "start": 70,
+          "end": 90,
+          "text": "Apply the principle daily"
+        },
+        {
+          "start": 90,
+          "end": 105,
+          "text": "This is atomic habits"
+        }
+      ]
+    }
+  ]
+}

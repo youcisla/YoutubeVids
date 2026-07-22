@@ -1,7 +1,0 @@
-file 'scene_0/scene_0_captioned.mp4'
-file 'scene_1/scene_1_captioned.mp4'
-file 'scene_2/scene_2_captioned.mp4'
-file 'scene_3/scene_3_captioned.mp4'
-file 'scene_4/scene_4_captioned.mp4'
-file 'scene_5/scene_5_captioned.mp4'
-file 'scene_6/scene_6_captioned.mp4'

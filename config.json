@@ -1,0 +1,13 @@
+{
+  "voice": "en-US-GuyNeural",
+  "voice_rate": "-10%",
+  "audio_format": "wav",
+  "wpm": 148,
+  "fps": 30,
+  "quality": "high",
+  "canvas_width": 1920,
+  "canvas_height": 1080,
+  "brand_kit": "brand-kit/DESIGN.md",
+  "scene_template": "pilot/scenes/scene_base.html",
+  "gsap_source": "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.14.2/gsap.min.js"
+}

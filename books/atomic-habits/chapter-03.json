@@ -1,0 +1,230 @@
+{
+  "book_title": "Atomic Habits",
+  "cover_ext": "svg",
+  "chapter": 3,
+  "chapter_title": "The Four-Step Model of Habits",
+  "narration_script": "Every human behavior can be broken down into four steps. Cue, craving, response, and reward. The cue triggers your brain to initiate a behavior. It predicts a reward. Your mind is constantly scanning the environment for cues. Where rewards are located. The craving is the motivational force behind every habit. Without some level of motivation you have no reason to act. What you crave is not the habit itself but the change in state it delivers. The response is the actual habit you perform. It depends on how motivated you are and how much friction is associated with the behavior. The reward is the end goal of every habit. The cue is about noticing the reward. The craving is about wanting the reward. The response is about obtaining the reward. And the reward delivers the satisfaction and becomes associated with the cue. Together these four steps form a neurological loop. Cue, craving, response, reward. This loop is running constantly. Every time you perform a habit your brain completes the loop and wires itself more deeply.",
+  "scene_count": 7,
+  "scenes": [
+    {
+      "index": 0,
+      "timestamp_end": 18,
+      "duration": 24,
+      "narration_text": "Every human behavior can be broken down into four steps. Cue, craving, response, and reward. The cue triggers your brain to initiate a behavior. It predicts a reward. Your mind is constantly scanning the environment for cues.",
+      "html": "<div class=\"scene\" id=\"s0\"><div class=\"scene-inner g1 cen\"><div class=\"cb\">Atomic Habits · Chapter</div><h1 class=\"h1\" style=\"margin-bottom:8px;max-width:1400px;\">The Four-Step Model<br>of <span style='color:#FACC15;'>Habits</span></h1><div class=\"sd cen\"></div><div class=\"bt cen\" style=\"font-size:48px;font-weight:400;\"><span class=\"hl\">Every behavior breaks down into four steps</span></div></div></div>",
+      "animations": "tl.from(R+' .cb',{opacity:0,y:-20,duration:0.8,ease:'power4.out'},0.3);tl.from(R+' h1',{opacity:0,y:40,scale:0.98,duration:1.2,ease:'power4.out'},0.6);tl.from(R+' .sd',{scaleX:0,transformOrigin:'center',duration:0.8,ease:'power4.out'},1.3);tl.from(R+' .bt',{opacity:0,y:20,duration:1,ease:'power4.out'},1.8);",
+      "captions": [
+        {
+          "start": 0,
+          "end": 6,
+          "text": "Every human behavior has four steps"
+        },
+        {
+          "start": 6,
+          "end": 12,
+          "text": "Cue, craving, response, reward"
+        },
+        {
+          "start": 12,
+          "end": 18,
+          "text": "This is the neurological loop"
+        },
+        {
+          "start": 18,
+          "end": 24,
+          "text": "Running constantly in your brain"
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "timestamp_end": 42,
+      "duration": 24,
+      "narration_text": "Every human behavior can be broken down into four steps. Cue, craving, response, and reward. The cue triggers your brain to initiate a behavior. It predicts a reward. Your mind is constantly scanning the environment for cues.",
+      "html": "<div class=\"scene\" id=\"s1\"><div class=\"scene-inner g1 cen\" style=\"max-width:1200px;\"><div class=\"cb\">Atomic Habits · Step One</div><h2 class=\"h2\" style=\"font-size:64px;\">The <span style='color:#FACC15;'>Cue</span></h2><div class=\"sd cen\"></div><div class=\"bt cen\" style=\"font-size:38px;\">Triggers your brain to initiate a behavior</div><div class=\"bt dim cen\" style=\"font-size:32px;margin-top:20px;\">It predicts a reward</div></div></div>",
+      "animations": "tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.3);tl.from(R+' h2',{opacity:0,y:30,duration:1,ease:'power4.out'},0.5);tl.from(R+' .sd',{scaleX:0,transformOrigin:'center',duration:0.6,ease:'power4.out'},1.2);tl.from(R+' .bt',{opacity:0,y:20,duration:0.8,ease:'power4.out'},1.5);",
+      "captions": [
+        {
+          "start": 0,
+          "end": 6,
+          "text": "The cue triggers your brain"
+        },
+        {
+          "start": 6,
+          "end": 12,
+          "text": "It predicts a reward"
+        },
+        {
+          "start": 12,
+          "end": 18,
+          "text": "Your mind scans for cues constantly"
+        },
+        {
+          "start": 18,
+          "end": 24,
+          "text": "Where rewards are located"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "timestamp_end": 66,
+      "duration": 24,
+      "narration_text": "Every human behavior can be broken down into four steps. Cue, craving, response, and reward. The cue triggers your brain to initiate a behavior. It predicts a reward. Your mind is constantly scanning the environment for cues.",
+      "html": "<div class=\"scene\" id=\"s2\"><div class=\"scene-inner g1 cen\" style=\"max-width:1200px;\"><div class=\"cb\">Atomic Habits · Step Two</div><h2 class=\"h2\" style=\"font-size:64px;\">The <span style='color:#A78BFA;'>Craving</span></h2><div class=\"sd cen\"></div><div class=\"bt cen\" style=\"font-size:38px;\">The motivational force behind every habit</div><div class=\"bt dim cen\" style=\"font-size:32px;margin-top:20px;\">You crave the change in state it delivers</div></div></div>",
+      "animations": "tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.3);tl.from(R+' h2',{opacity:0,y:30,duration:1,ease:'power4.out'},0.5);tl.from(R+' .sd',{scaleX:0,transformOrigin:'center',duration:0.6,ease:'power4.out'},1.2);tl.from(R+' .bt',{opacity:0,y:20,duration:0.8,ease:'power4.out'},1.5);",
+      "captions": [
+        {
+          "start": 0,
+          "end": 6,
+          "text": "The craving is the motivational force"
+        },
+        {
+          "start": 6,
+          "end": 12,
+          "text": "Without motivation, no action"
+        },
+        {
+          "start": 12,
+          "end": 18,
+          "text": "Not the habit itself"
+        },
+        {
+          "start": 18,
+          "end": 24,
+          "text": "The change in state it delivers"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "timestamp_end": 90,
+      "duration": 24,
+      "narration_text": "Every human behavior can be broken down into four steps. Cue, craving, response, and reward. The cue triggers your brain to initiate a behavior. It predicts a reward. Your mind is constantly scanning the environment for cues.",
+      "html": "<div class=\"scene\" id=\"s3\"><div class=\"scene-inner g1 cen\" style=\"max-width:1200px;\"><div class=\"cb\">Atomic Habits · Step Three</div><h2 class=\"h2\" style=\"font-size:64px;\">The <span style='color:#34D399;'>Response</span></h2><div class=\"sd cen\"></div><div class=\"bt cen\" style=\"font-size:38px;\">The actual habit you perform</div><div class=\"bt dim cen\" style=\"font-size:32px;margin-top:20px;\">Depends on motivation and friction</div></div></div>",
+      "animations": "tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.3);tl.from(R+' h2',{opacity:0,y:30,duration:1,ease:'power4.out'},0.5);tl.from(R+' .sd',{scaleX:0,transformOrigin:'center',duration:0.6,ease:'power4.out'},1.2);tl.from(R+' .bt',{opacity:0,y:20,duration:0.8,ease:'power4.out'},1.5);",
+      "captions": [
+        {
+          "start": 0,
+          "end": 6,
+          "text": "The response is the actual habit"
+        },
+        {
+          "start": 6,
+          "end": 12,
+          "text": "Depends on how motivated you are"
+        },
+        {
+          "start": 12,
+          "end": 18,
+          "text": "And how much friction exists"
+        },
+        {
+          "start": 18,
+          "end": 24,
+          "text": "Friction kills habits"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "timestamp_end": 114,
+      "duration": 24,
+      "narration_text": "Every human behavior can be broken down into four steps. Cue, craving, response, and reward. The cue triggers your brain to initiate a behavior. It predicts a reward. Your mind is constantly scanning the environment for cues.",
+      "html": "<div class=\"scene\" id=\"s4\"><div class=\"scene-inner g1 cen\" style=\"max-width:1200px;\"><div class=\"cb\">Atomic Habits · Step Four</div><h2 class=\"h2\" style=\"font-size:64px;\">The <span style='color:#FB923C;'>Reward</span></h2><div class=\"sd cen\"></div><div class=\"bt cen\" style=\"font-size:38px;\">The end goal of every habit</div><div class=\"bt dim cen\" style=\"font-size:32px;margin-top:20px;\">Delivers satisfaction and closes the loop</div></div></div>",
+      "animations": "tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.3);tl.from(R+' h2',{opacity:0,y:30,duration:1,ease:'power4.out'},0.5);tl.from(R+' .sd',{scaleX:0,transformOrigin:'center',duration:0.6,ease:'power4.out'},1.2);tl.from(R+' .bt',{opacity:0,y:20,duration:0.8,ease:'power4.out'},1.5);",
+      "captions": [
+        {
+          "start": 0,
+          "end": 6,
+          "text": "The reward is the end goal"
+        },
+        {
+          "start": 6,
+          "end": 12,
+          "text": "Delivers satisfaction"
+        },
+        {
+          "start": 12,
+          "end": 18,
+          "text": "Becomes associated with the cue"
+        },
+        {
+          "start": 18,
+          "end": 24,
+          "text": "The loop wires itself deeper"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "timestamp_end": 144,
+      "duration": 30,
+      "narration_text": "Every human behavior can be broken down into four steps. Cue, craving, response, and reward. The cue triggers your brain to initiate a behavior. It predicts a reward. Your mind is constantly scanning the environment for cues.",
+      "html": "<div class=\"scene\" id=\"s5\"><div class=\"scene-inner g1 cen\" style=\"max-width:1400px;\"><div class=\"cb\">Atomic Habits · The Loop</div><div class=\"g4\"><div class=\"card\" style=\"text-align:center;padding:24px 12px;\"><div class=\"cn\" style=\"color:#FACC15;font-size:30px;\">Cue</div><div class=\"ct\" style=\"font-size:26px;\">Make it <span class=\"hl\">obvious</span></div></div><div class=\"card\" style=\"text-align:center;padding:24px 12px;\"><div class=\"cn\" style=\"color:#A78BFA;font-size:30px;\">Craving</div><div class=\"ct\" style=\"font-size:26px;\">Make it <span class=\"hl\">attractive</span></div></div><div class=\"card\" style=\"text-align:center;padding:24px 12px;\"><div class=\"cn\" style=\"color:#34D399;font-size:30px;\">Response</div><div class=\"ct\" style=\"font-size:26px;\">Make it <span class=\"hl\">easy</span></div></div><div class=\"card\" style=\"text-align:center;padding:24px 12px;\"><div class=\"cn\" style=\"color:#FB923C;font-size:30px;\">Reward</div><div class=\"ct\" style=\"font-size:26px;\">Make it <span class=\"hl\">satisfying</span></div></div></div></div></div>",
+      "animations": "tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.3);tl.from(R+' .card',{opacity:0,y:20,duration:0.7,ease:'power4.out',stagger:0.1},0.8);",
+      "captions": [
+        {
+          "start": 0,
+          "end": 6,
+          "text": "Cue — the trigger"
+        },
+        {
+          "start": 6,
+          "end": 12,
+          "text": "Craving — the motivation"
+        },
+        {
+          "start": 12,
+          "end": 18,
+          "text": "Response — the action"
+        },
+        {
+          "start": 18,
+          "end": 24,
+          "text": "Reward — the satisfaction"
+        },
+        {
+          "start": 24,
+          "end": 30,
+          "text": "The neurological loop"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "timestamp_end": 200,
+      "duration": 56,
+      "narration_text": "Every human behavior can be broken down into four steps. Cue, craving, response, and reward. The cue triggers your brain to initiate a behavior. It predicts a reward. Your mind is constantly scanning the environment for cues.",
+      "html": "<div class=\"scene\" id=\"s6\"><div class=\"scene-inner g1 cen\" style=\"max-width:1100px;\"><div class=\"cb\">Atomic Habits · Chapter Summary</div><div style=\"display:flex;flex-direction:column;gap:20px;width:100%;\"><div class=\"card\" style=\"text-align:center;\"><div class=\"ct\" style=\"font-size:32px;\">1. <span class='hl'>Cue</span> triggers the behavior</div></div><div class=\"card\" style=\"text-align:center;\"><div class=\"ct\" style=\"font-size:32px;\">2. <span class='hl'>Craving</span> provides the motivation</div></div><div class=\"card\" style=\"text-align:center;\"><div class=\"ct\" style=\"font-size:32px;\">3. <span class='hl'>Response</span> delivers the action</div></div><div class=\"card\" style=\"text-align:center;\"><div class=\"ct\" style=\"font-size:32px;\">4. <span class='hl'>Reward</span> closes the loop</div></div></div></div></div>",
+      "animations": "tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.3);tl.from(R+' .card',{opacity:0,y:20,duration:0.7,ease:'power4.out',stagger:0.15},0.8);",
+      "captions": [
+        {
+          "start": 0,
+          "end": 8,
+          "text": "These four steps form a neurological loop"
+        },
+        {
+          "start": 8,
+          "end": 18,
+          "text": "Cue, craving, response, reward"
+        },
+        {
+          "start": 18,
+          "end": 30,
+          "text": "Running constantly, every day"
+        },
+        {
+          "start": 30,
+          "end": 42,
+          "text": "Every habit completes this loop"
+        },
+        {
+          "start": 42,
+          "end": 56,
+          "text": "And wires itself deeper in your brain"
+        }
+      ]
+    }
+  ]
+}
