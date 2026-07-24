@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.2);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.4);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-5 py-2.5 bg-accent-gold text-midnight font-heading font-semibold rounded-lg
+           hover:brightness-110 active:brightness-90 transition-all duration-150
+           disabled:opacity-40 disabled:cursor-not-allowed text-sm;
+  }
+  .btn-secondary {
+    @apply px-4 py-2 bg-slate-850 border border-[#1E293B] text-[#CBD5E1] font-body rounded-lg
+           hover:border-accent-gold/30 hover:text-[#F8FAFC] transition-all duration-150
+           disabled:opacity-40 disabled:cursor-not-allowed text-sm;
+  }
+  .input-field {
+    @apply w-full bg-slate-850 border border-[#1E293B] rounded-lg px-3.5 py-2.5 text-sm text-[#F8FAFC]
+           placeholder:text-[#475569] focus:outline-none focus:border-accent-gold/50 focus:ring-1 focus:ring-accent-gold/20
+           transition-all duration-150;
+  }
+  .card-panel {
+    @apply bg-slate-850/80 border border-[#1E293B] rounded-xl p-5;
+  }
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium;
+  }
+  .badge-success { @apply bg-emerald-500/10 text-emerald-400 border border-emerald-500/20; }
+  .badge-warn { @apply bg-accent-gold/10 text-accent-gold border border-accent-gold/20; }
+  .badge-error { @apply bg-red-500/10 text-red-400 border border-red-500/20; }
+  .badge-info { @apply bg-blue-500/10 text-blue-400 border border-blue-500/20; }
+}

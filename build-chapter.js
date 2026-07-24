@@ -24,6 +24,21 @@ const whisper = require('./whisper-captions.js');
 const VALID_BOOK_RE = /^[a-z0-9_-]+$/;
 
 // ─── Safe spawn helpers (no shell, no injection) ─────────
+async function getAudioDuration(audioPath) {
+  try {
+    // Use ffprobe — it returns clean JSON with duration in seconds
+    const proc = spawn('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'json', audioPath], { stdio: ['ignore', 'pipe', 'pipe'] });
+    let stdout = '';
+    proc.stdout.on('data', d => stdout += d);
+    const code = await new Promise(res => proc.on('close', res));
+    if (code === 0) {
+      const j = JSON.parse(stdout);
+      return parseFloat(j.format?.duration || '0');
+    }
+  } catch {}
+  return 0;
+}
+
 function run(cmd, args, opts = {}) {
   return new Promise((resolve, reject) => {
     const proc = spawn(cmd, args, {
@@ -36,7 +51,9 @@ function run(cmd, args, opts = {}) {
     proc.stdout.on('data', d => stdout += d);
     proc.stderr.on('data', d => stderr += d);
     proc.on('close', code => {
-      if (code === 0) resolve(stdout);
+      // HyperFrames sometimes exits via signal (code === null) but the artifact is valid.
+      // Treat null exit as success if there's no stderr error.
+      if (code === 0 || (code === null && !stderr.toLowerCase().includes('error'))) resolve(stdout);
       else reject(new Error(`${opts.label || cmd} exited ${code}\n${stderr.slice(-500)}`));
     });
     proc.on('error', reject);
@@ -48,14 +65,18 @@ function ffmpeg(args, opts = {}) {
 }
 
 function hyperframes(args, opts = {}) {
-  return run('npx', ['hyperframes', ...args], { ...opts, label: opts.label || 'hyperframes' });
+  // npx is .cmd on Windows — spawn() can't find it without cmd.exe
+  const npxPath = path.join(path.dirname(process.execPath), 'npx' + (process.platform === 'win32' ? '.cmd' : ''));
+  const cmd = process.platform === 'win32' ? 'cmd.exe' : npxPath;
+  const cmdArgs = process.platform === 'win32' ? ['/c', npxPath, 'hyperframes', ...args] : ['hyperframes', ...args];
+  return run(cmd, cmdArgs, { ...opts, label: opts.label || 'hyperframes' });
 }
 
 function edgeTts(voice, rate, text, outPath) {
   return new Promise((resolve, reject) => {
     const proc = spawn('edge-tts', [
       '--voice', voice,
-      '--rate', rate,
+      `--rate=${rate}`,
       '--write-media', outPath,
       '--text', text,
     ], { stdio: ['ignore', 'pipe', 'pipe'], timeout: 120000 });
@@ -93,14 +114,68 @@ function validateChapter(data) {
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
 
 // ─── Core pipeline functions ─────────────────────────────
+function buildCaptionJs(scene) {
+  // Build word-by-word kinetic captions from scene.captions
+  const captions = scene.captions || [];
+  if (captions.length === 0) return '';
+  const lines = captions.map((c, i) => {
+    const words = c.text.split(/\s+/).filter(Boolean);
+    return JSON.stringify({
+      start: c.start,
+      end: c.end,
+      words,
+    });
+  }).join(',\n  ');
+  return `
+(function(){
+  const lines = [
+  ${lines}
+  ];
+  const capEl = document.getElementById('cap-line');
+  if (!capEl) return;
+  let wordEls = [];
+  function showLine(idx) {
+    const l = lines[idx];
+    if (!l) return;
+    wordEls.forEach(w => w.remove());
+    wordEls = [];
+    capEl.innerHTML = '';
+    l.words.forEach((w, i) => {
+      const span = document.createElement('span');
+      span.className = 'word';
+      span.textContent = w;
+      capEl.appendChild(span);
+      wordEls.push(span);
+    });
+    const span = (l.end - l.start) / Math.max(l.words.length, 1);
+    l.words.forEach((_, i) => {
+      tl.to(wordEls[i], { className: 'word live', duration: 0.05 }, l.start + i * span);
+    });
+  }
+  // Hide before first line, show on entry, hide between lines
+  lines.forEach((l, i) => {
+    const prev = i > 0 ? lines[i-1].end : 0;
+    tl.set('#cap-line', { opacity: 0 }, 0);
+    tl.set('#cap-line', { opacity: 1 }, l.start);
+    tl.set('#cap-line', { opacity: 0 }, l.end + 0.2);
+  });
+  // Actually populate each line at its start time
+  lines.forEach((l, i) => {
+    tl.call(() => showLine(i), [], l.start);
+  });
+})();`;
+}
+
 function buildSceneHtml(scene, bookTitle, coverExt) {
   const base = fs.readFileSync(path.join(ROOT, 'pilot/scenes/scene_base.html'), 'utf8');
   const gsapSrc = CONFIG.gsap_source || 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.14.2/gsap.min.js';
+  const captionJs = buildCaptionJs(scene);
+  const allAnims = scene.animations + '\n' + captionJs;
   return base
     .replace(/\{N\}/g, scene.index)
     .replace(/\{DUR\}/g, scene.duration)
     .replace(/\{CONTENT\}/g, scene.html)
-    .replace(/\{ANIMATIONS\}/g, scene.animations)
+    .replace(/\{ANIMATIONS\}/g, allAnims)
     .replace(/\{BOOK\}/g, bookTitle)
     .replace(/\{EXT\}/g, coverExt)
     .replace(/\{GSAP_SRC\}/g, gsapSrc);
@@ -197,26 +272,41 @@ async function buildChapter(book, chapterNum, keepTemp, noWhisper, doUpload) {
 
     const splitTimestamps = scenes.map(s => s.timestamp_end);
 
-    // 2. Split audio into scene clips
-    const ts = splitTimestamps.slice(0, -1);
-    if (ts.length > 0) {
-      await ffmpeg([
-        '-y', '-i', narrationPath,
-        '-c', 'copy', '-map', '0',
-        '-f', 'segment',
-        '-segment_times', ts.join(','),
-        '-reset_timestamps', '1',
-        path.join(sceneDir, 'narration_%d.wav'),
-      ], { label: 'audio split' });
-    } else {
-      fs.copyFileSync(narrationPath, path.join(sceneDir, 'narration_0.wav'));
+    // 2. Split audio into scene clips (use individual -ss -to).
+    //    For each scene, slice [prevTime, t]. If the audio is shorter than t,
+    //    FFmpeg returns empty — handle by clamping to actual audio length.
+    let prevTime = 0;
+    const audioDuration = await getAudioDuration(narrationPath);
+    for (let i = 0; i < splitTimestamps.length; i++) {
+      let t = Math.min(splitTimestamps[i], audioDuration);
+      const outPath = path.join(sceneDir, `narration_${i}.wav`);
+      if (t - prevTime < 0.1) {
+        // Scene would be empty (audio ended) — duplicate last meaningful clip or skip
+        const lastValid = i - 1 >= 0 ? path.join(sceneDir, `narration_${i-1}.wav`) : narrationPath;
+        fs.copyFileSync(lastValid, outPath);
+        console.log(`  ⚠ Scene ${i}: audio past end, reusing scene ${i-1}`);
+      } else {
+        await ffmpeg([
+          '-y', '-i', narrationPath,
+          '-ss', String(prevTime),
+          '-to', String(t),
+          '-c', 'pcm_s16le',
+          outPath,
+        ], { label: `audio split scene ${i}` });
+      }
+      prevTime = t;
     }
 
     // 3. Generate captions via Whisper (or fallback to .srt from JSON)
+    const sceneEndTimes = scenes.map(s => s.timestamp_end);
     const sceneDurations = scenes.map(s => s.duration);
+    // Create scene directories before writing .srt files
+    const sceneDirs = scenes.map((_, i) => path.join(sceneDir, `scene_${i}`));
+    for (const dir of sceneDirs) fs.mkdirSync(dir, { recursive: true });
+
     if (!noWhisper) {
       try {
-        const captionsOk = await whisper.generateCaptions(narrationPath, splitTimestamps, sceneDir, sceneDurations);
+        const captionsOk = await whisper.generateCaptions(narrationPath, sceneEndTimes, sceneDir, sceneDurations);
         if (captionsOk) {
           console.log('  Captions generated by Whisper');
         } else {
@@ -238,11 +328,20 @@ async function buildChapter(book, chapterNum, keepTemp, noWhisper, doUpload) {
       }
     }
 
-  // 4. Build scene dirs + render in parallel (batches of 4)
+    // 4. Build content + start renders in parallel (batches of 4)
     console.log(`  Building ${scenes.length} scene directories...`);
-    const sceneDirs = scenes.map((s, i) =>
-      buildAndRenderScene(s, i, sceneDir, bookTitle, coverExt, book, chapterNum)
-    );
+
+    // Copy narration, HTML, and cover into each scene dir
+    for (let i = 0; i < scenes.length; i++) {
+      const s = scenes[i];
+      const dir = sceneDirs[i];
+      const srcNar = path.join(sceneDir, `narration_${i}.wav`);
+      if (fs.existsSync(srcNar)) fs.copyFileSync(srcNar, path.join(dir, 'narration.wav'));
+      s.index = i;
+      fs.writeFileSync(path.join(dir, 'index.html'), buildSceneHtml(s, bookTitle, coverExt));
+      const coverSrc = path.join(ROOT, 'books', book, `cover.${coverExt}`);
+      if (fs.existsSync(coverSrc)) fs.copyFileSync(coverSrc, path.join(dir, `cover.${coverExt}`));
+    }
 
     console.log('  Rendering scenes in parallel...');
     const renderPromises = sceneDirs.map((dir, i) =>
@@ -256,36 +355,34 @@ async function buildChapter(book, chapterNum, keepTemp, noWhisper, doUpload) {
     const BATCH_SIZE = 4;
     for (let batch = 0; batch < renderPromises.length; batch += BATCH_SIZE) {
       const batchPromises = renderPromises.slice(batch, batch + BATCH_SIZE);
-      await Promise.all(batchPromises.map((p, j) => {
+      // Wrap each in its own catch so rejections don't break the batch
+      const safePromises = batchPromises.map((p, j) => {
         const idx = batch + j;
-        return p.catch(err => {
-          console.error(`  ✗ Scene ${idx} render failed: ${err.message}`);
-          throw err;
+        return Promise.resolve(p).catch(err => {
+          console.error(`  ⚠ Scene ${idx} render failed (continuing): ${err.message.slice(0, 200)}`);
+          return null;
         });
-      }));
+      });
+      await Promise.all(safePromises);
       console.log(`  Batch ${Math.floor(batch/BATCH_SIZE)+1}/${Math.ceil(renderPromises.length/BATCH_SIZE)} complete`);
     }
 
-    // 5. Burn subtitles in parallel
-    console.log('  Burning subtitles...');
-    const burnPromises = sceneDirs.map((dir, i) => {
-      const vfPath = path.join(dir, 'vf.txt');
-      fs.writeFileSync(vfPath, 'subtitles=captions.srt');
-      return ffmpeg([
-        '-y', '-i', `scene_${i}.mp4`,
-        '-filter_script:v', vfPath,
-        '-c:a', 'copy',
-        `scene_${i}_captioned.mp4`,
-      ], { cwd: dir, label: `burn subs scene ${i}` }).finally(() => {
-        try { fs.unlinkSync(vfPath); } catch {}
-      });
-    });
-    await Promise.all(burnPromises);
+    // 5. Skip subtitle burn — captions are rendered via GSAP in the scene HTML.
+    //    FFmpeg .srt burn is disabled to avoid double subtitles and timing drift.
+    console.log('  Skipping subtitle burn (GSAP-driven captions in scene HTML)');
 
-    // 6. Concat all scenes
+    // 6. Concat all scenes (only the ones that rendered)
     console.log('  Concatenating...');
+    const validScenes = sceneDirs.filter((dir, i) => {
+      const out = path.join(dir, `scene_${i}.mp4`);
+      if (!fs.existsSync(out) || fs.statSync(out).size < 1000) {
+        console.warn(`  ⚠ Skipping scene ${i} (no output)`);
+        return false;
+      }
+      return true;
+    });
     const playlistPath = path.join(outDir, 'playlist.txt');
-    const lines = sceneDirs.map((dir, i) => `file '${path.join(dir, `scene_${i}_captioned.mp4`)}'`);
+    const lines = validScenes.map((dir, i) => `file '${path.join(sceneDirs[sceneDirs.indexOf(dir)], `scene_${sceneDirs.indexOf(dir)}.mp4`)}'`);
     fs.writeFileSync(playlistPath, lines.join('\n'));
     await ffmpeg([
       '-y', '-f', 'concat', '-safe', '0',

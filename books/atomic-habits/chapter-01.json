@@ -11,214 +11,96 @@
       "timestamp_end": 20,
       "duration": 22,
       "narration_text": "If you get one percent better each day for one year you will end up thirty seven times better. Conversely if you get one percent worse each day for one year you will decline nearly down to zero. That is the mathematics of tiny habits. We expect progress to be linear. We put in the work and expect results immediately.",
-      "html": "<div class=\"scene\" id=\"s0\"><div class=\"scene-inner g1 cen\"><div class=\"cb\">Atomic Habits · Chapter</div><h1 class=\"h1\" style=\"margin-bottom:8px;max-width:1400px;\">The Surprising Power of<br><span style='color:#FACC15;'>Tiny Gains</span></h1><div class=\"sd cen\"></div><div class=\"bt cen\" style=\"font-size:48px;font-weight:400;\"><span class=\"hl\">One percent. Every day.</span></div></div></div>",
-      "animations": "tl.from(R+' .cb',{opacity:0,y:-20,duration:0.8,ease:'power4.out'},0.3);tl.from(R+' h1',{opacity:0,y:40,scale:0.98,duration:1.2,ease:'power4.out'},0.6);tl.from(R+' .sd',{scaleX:0,transformOrigin:'center',duration:0.8,ease:'power4.out'},1.3);tl.from(R+' .bt',{opacity:0,y:20,duration:1,ease:'power4.out'},1.8);",
+      "html": "<h1 class=\"h1\"><span class=\"kw\">1% better.</span><br>Every. Single. Day.</h1><div class=\"divider\"></div><div class=\"num-big\">1%</div>",
+      "animations": "tl.to('#orb-1',{x:300,y:200,scale:1.3,duration:DUR,ease:'sine.inOut'},0);tl.to('#orb-2',{x:-200,y:-150,scale:1.1,duration:DUR,ease:'sine.inOut'},0);tl.from(R+' .cb',{opacity:0,y:-20,duration:0.8,ease:'power4.out'},0.2);tl.from(R+' .h1',{opacity:0,y:60,scale:0.95,duration:1.2,ease:'power4.out'},0.5);tl.from(R+' .divider',{scaleX:0,transformOrigin:'left center',duration:0.8,ease:'power4.out'},1.4);tl.from(R+' .num-big',{opacity:0,scale:0.5,duration:1.6,ease:'power4.out'},1.0);",
       "captions": [
-        {
-          "start": 0,
-          "end": 6,
-          "text": "If you get one percent better each day"
-        },
-        {
-          "start": 6,
-          "end": 12,
-          "text": "you will end up thirty-seven times better"
-        },
-        {
-          "start": 12,
-          "end": 18,
-          "text": "The mathematics of tiny habits"
-        },
-        {
-          "start": 18,
-          "end": 22,
-          "text": "This is the compound interest of self-improvement"
-        }
+        {"start": 0, "end": 4, "text": "If you get one percent better each day"},
+        {"start": 4, "end": 8, "text": "for one year you will end up thirty seven times better"},
+        {"start": 8, "end": 12, "text": "Conversely if you get one percent worse each day"},
+        {"start": 12, "end": 16, "text": "for one year you will decline nearly down to zero"},
+        {"start": 16, "end": 20, "text": "That is the mathematics of tiny habits"}
       ]
     },
     {
       "index": 1,
-      "timestamp_end": 46,
+      "timestamp_end": 45,
       "duration": 26,
-      "narration_text": "If you get one percent better each day for one year you will end up thirty seven times better. Conversely if you get one percent worse each day for one year you will decline nearly down to zero. That is the mathematics of tiny habits. We expect progress to be linear. We put in the work and expect results immediately.",
-      "html": "<div class=\"scene\" id=\"s1\"><div class=\"scene-inner g1 cen\" style=\"max-width:1200px;\"><div class=\"cb\">Atomic Habits · The Core Problem</div><h2 class=\"h2\" style=\"font-size:64px;\">We expect <span style='color:#FACC15;'>linear</span> progress</h2><div class=\"sd cen\"></div><div class=\"bt cen\" style=\"font-size:38px;\">Results feel invisible</div><div class=\"bt dim cen\" style=\"font-size:32px;margin-top:20px;\">Until they don't</div></div></div>",
-      "animations": "tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.3);tl.from(R+' h2',{opacity:0,y:30,duration:1,ease:'power4.out'},0.5);tl.from(R+' .sd',{scaleX:0,transformOrigin:'center',duration:0.6,ease:'power4.out'},1.2);tl.from(R+' .bt',{opacity:0,y:20,duration:0.8,ease:'power4.out'},1.5);",
+      "narration_text": "We expect progress to be linear. We put in the work and expect results immediately. When they do not arrive we quit. We fail to see that habits are the compound interest of self improvement. Getting one percent better matters because it multiplies. This is why patience matters as much as effort.",
+      "html": "<h2 class=\"h2\">We expect progress to be <span class=\"kw\">linear.</span></h2><div class=\"divider\"></div>",
+      "animations": "tl.to('#orb-1',{x:-100,y:300,scale:1.5,duration:DUR,ease:'sine.inOut'},0);tl.to('#orb-3',{x:-200,y:-200,scale:1.4,duration:DUR,ease:'sine.inOut'},0);tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.2);tl.from(R+' .h2',{opacity:0,y:40,duration:1.0,ease:'power4.out'},0.5);tl.from(R+' .divider',{scaleX:0,transformOrigin:'left center',duration:0.7,ease:'power4.out'},1.2);",
       "captions": [
-        {
-          "start": 0,
-          "end": 6,
-          "text": "We expect progress to be linear"
-        },
-        {
-          "start": 6,
-          "end": 12,
-          "text": "When results don't arrive, we quit"
-        },
-        {
-          "start": 12,
-          "end": 18,
-          "text": "Habits compound over time"
-        },
-        {
-          "start": 18,
-          "end": 26,
-          "text": "Patience matters as much as effort"
-        }
+        {"start": 0, "end": 4, "text": "We expect progress to be linear"},
+        {"start": 4, "end": 9, "text": "We put in the work and expect results immediately"},
+        {"start": 9, "end": 13, "text": "When they do not arrive we quit"},
+        {"start": 13, "end": 17, "text": "Habits are the compound interest of self improvement"},
+        {"start": 17, "end": 22, "text": "Getting one percent better matters because it multiplies"}
       ]
     },
     {
       "index": 2,
-      "timestamp_end": 72,
+      "timestamp_end": 71,
       "duration": 26,
-      "narration_text": "If you get one percent better each day for one year you will end up thirty seven times better. Conversely if you get one percent worse each day for one year you will decline nearly down to zero. That is the mathematics of tiny habits. We expect progress to be linear. We put in the work and expect results immediately.",
-      "html": "<div class=\"scene\" id=\"s2\"><div class=\"scene-inner g1 cen\" style=\"max-width:1200px;\"><div class=\"cb\">Atomic Habits · The Trap</div><h2 class=\"h2\" style=\"font-size:64px;\">The <span style='color:#FACC15;'>Plateau of Latent Potential</span></h2><div class=\"sd cen\"></div><div class=\"bt cen\" style=\"font-size:38px;\">You work and you work and you see nothing</div><div class=\"bt dim cen\" style=\"font-size:32px;margin-top:20px;\">Then suddenly your effort breaks through</div></div></div>",
-      "animations": "tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.3);tl.from(R+' h2',{opacity:0,y:30,duration:1,ease:'power4.out'},0.5);tl.from(R+' .sd',{scaleX:0,transformOrigin:'center',duration:0.6,ease:'power4.out'},1.2);tl.from(R+' .bt',{opacity:0,y:20,duration:0.8,ease:'power4.out'},1.5);",
+      "narration_text": "Winners and losers have the same goals. What separates them is not the goal but the system. Goals are about the results you want to achieve. Systems are about the processes that lead to those results.",
+      "html": "<h2 class=\"h2\">Winners and losers have<br>the <span class=\"kw\">same goals.</span></h2><div class=\"divider\"></div>",
+      "animations": "tl.to('#orb-2',{x:-300,y:-100,scale:0.9,duration:DUR,ease:'sine.inOut'},0);tl.to('#orb-1',{x:200,y:100,scale:1.2,duration:DUR,ease:'sine.inOut'},0);tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.2);tl.from(R+' .h2',{opacity:0,y:40,duration:1.0,ease:'power4.out'},0.5);tl.from(R+' .divider',{scaleX:0,transformOrigin:'left center',duration:0.7,ease:'power4.out'},1.2);",
       "captions": [
-        {
-          "start": 0,
-          "end": 7,
-          "text": "The Plateau of Latent Potential"
-        },
-        {
-          "start": 7,
-          "end": 14,
-          "text": "Early effort produces almost no visible result"
-        },
-        {
-          "start": 14,
-          "end": 20,
-          "text": "The most powerful outcomes are delayed"
-        },
-        {
-          "start": 20,
-          "end": 26,
-          "text": "Patience is the differentiator"
-        }
+        {"start": 0, "end": 4, "text": "Winners and losers have the same goals"},
+        {"start": 4, "end": 8, "text": "What separates them is not the goal"},
+        {"start": 8, "end": 13, "text": "Goals are about the results you want to achieve"},
+        {"start": 13, "end": 18, "text": "Systems are about the processes that lead to those results"}
       ]
     },
     {
       "index": 3,
-      "timestamp_end": 102,
+      "timestamp_end": 100,
       "duration": 30,
-      "narration_text": "If you get one percent better each day for one year you will end up thirty seven times better. Conversely if you get one percent worse each day for one year you will decline nearly down to zero. That is the mathematics of tiny habits. We expect progress to be linear. We put in the work and expect results immediately.",
-      "html": "<div class=\"scene\" id=\"s3\"><div class=\"scene-inner g2 cen\" style=\"max-width:1400px;\"><div class=\"cb\">Atomic Habits · The Shift</div><div class=\"card\" style=\"border-color:rgba(250,204,21,0.25);text-align:center;\"><div class=\"cn\" style=\"color:#FACC15;font-size:36px;\">Goals</div><div class=\"ct\" style=\"font-size:32px;\"><span class='hl'>What</span> you want</div></div><div class=\"card\" style=\"border-color:rgba(167,139,250,0.25);text-align:center;\"><div class=\"cn\" style=\"color:#A78BFA;font-size:36px;\">Systems</div><div class=\"ct\" style=\"font-size:32px;\"><span class='hl'>How</span> you get there</div></div><div class=\"bt dim\" style=\"grid-column:1/-1;font-size:30px;text-align:center;\">You fall to the level of your systems</div></div></div>",
-      "animations": "tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.3);tl.from(R+' .card',{opacity:0,y:20,duration:0.8,ease:'power4.out',stagger:0.2},0.8);tl.from(R+' .bt',{opacity:0,y:15,duration:0.6,ease:'power4.out'},1.8);",
+      "narration_text": "You do not rise to the level of your goals. You fall to the level of your systems.",
+      "html": "<h1 class=\"h1\" style=\"font-size:108px;\"><span class=\"kw\">You fall</span><br>to the level of your<br>systems.</h1><div class=\"divider\"></div><div class=\"num-big\" style=\"color:rgba(167,139,250,0.18);\">3</div>",
+      "animations": "tl.to('#orb-1',{x:400,y:-100,scale:1.4,duration:DUR,ease:'sine.inOut'},0);tl.to('#orb-2',{x:-200,y:200,scale:1.3,duration:DUR,ease:'sine.inOut'},0);tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.2);tl.from(R+' .h1',{opacity:0,y:50,scale:0.96,duration:1.2,ease:'power4.out'},0.5);tl.from(R+' .divider',{scaleX:0,transformOrigin:'left center',duration:0.8,ease:'power4.out'},1.4);tl.from(R+' .num-big',{opacity:0,scale:0.4,rotation:-30,duration:2,ease:'power4.out'},1.0);",
       "captions": [
-        {
-          "start": 0,
-          "end": 6,
-          "text": "Winners and losers have the same goals"
-        },
-        {
-          "start": 6,
-          "end": 13,
-          "text": "What separates them is not the goal"
-        },
-        {
-          "start": 13,
-          "end": 20,
-          "text": "It is the system"
-        },
-        {
-          "start": 20,
-          "end": 30,
-          "text": "You do not rise to the level of your goals"
-        }
+        {"start": 0, "end": 5, "text": "You do not rise to the level of your goals"},
+        {"start": 5, "end": 11, "text": "You fall to the level of your systems"}
       ]
     },
     {
       "index": 4,
-      "timestamp_end": 130,
+      "timestamp_end": 128,
       "duration": 28,
-      "narration_text": "If you get one percent better each day for one year you will end up thirty seven times better. Conversely if you get one percent worse each day for one year you will decline nearly down to zero. That is the mathematics of tiny habits. We expect progress to be linear. We put in the work and expect results immediately.",
-      "html": "<div class=\"scene\" id=\"s4\"><div class=\"scene-inner g1 cen\" style=\"max-width:1300px;\"><div class=\"cb\">Atomic Habits · Three Levels</div><h2 class=\"h2\" style=\"font-size:56px;\">Behavior <span style='color:#FACC15;'>change</span></h2><div class=\"sd cen\"></div><div style=\"display:flex;gap:20px;justify-content:center;flex-wrap:wrap;\"><div class=\"card\" style=\"text-align:center;padding:20px 24px;min-width:180px;\"><div class=\"cn\" style=\"font-size:26px;\">Outcomes</div><div class=\"ct\" style=\"font-size:22px;\">What you get</div></div><div class=\"card\" style=\"text-align:center;padding:20px 24px;min-width:180px;\"><div class=\"cn\" style=\"font-size:26px;\">Process</div><div class=\"ct\" style=\"font-size:22px;\">What you do</div></div><div class=\"card\" style=\"text-align:center;padding:20px 24px;min-width:180px;border-color:rgba(167,139,250,0.3);\"><div class=\"cn\" style=\"font-size:26px;color:#A78BFA;\">Identity</div><div class=\"ct\" style=\"font-size:22px;\">What you believe</div></div></div></div></div>",
-      "animations": "tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.3);tl.from(R+' h2',{opacity:0,y:30,duration:1,ease:'power4.out'},0.5);tl.from(R+' .sd',{scaleX:0,transformOrigin:'center',duration:0.6,ease:'power4.out'},1.2);tl.from(R+' .card',{opacity:0,y:15,duration:0.5,ease:'power4.out',stagger:0.1},1.5);",
+      "narration_text": "There are three levels of behavior change. Outcomes what you get. Process what you do. Identity what you believe. The most effective way to change your habits is to focus not on what you want to achieve but on who you wish to become.",
+      "html": "<h2 class=\"h2\" style=\"font-size:76px;\">Three <span class=\"kw\">levels</span> of<br>behavior change.</h2><div class=\"divider\"></div><div style=\"display:flex;gap:60px;margin-top:20px;font-family:'Space Grotesk',sans-serif;font-size:36px;color:#CBD5E1;\"><div><div style=\"color:#FACC15;font-weight:700;font-size:52px;margin-bottom:8px;\">01</div>Outcomes</div><div><div style=\"color:#FACC15;font-weight:700;font-size:52px;margin-bottom:8px;\">02</div>Process</div><div><div style=\"color:#FACC15;font-weight:700;font-size:52px;margin-bottom:8px;\">03</div>Identity</div></div>",
+      "animations": "tl.to('#orb-1',{x:200,y:300,scale:1.2,duration:DUR,ease:'sine.inOut'},0);tl.to('#orb-2',{x:300,y:-200,scale:1.1,duration:DUR,ease:'sine.inOut'},0);tl.to('#orb-3',{x:-300,y:100,scale:1.3,duration:DUR,ease:'sine.inOut'},0);tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.2);tl.from(R+' .h2',{opacity:0,y:40,duration:1.0,ease:'power4.out'},0.5);tl.from(R+' .divider',{scaleX:0,transformOrigin:'left center',duration:0.7,ease:'power4.out'},1.2);tl.from(R+' div > div > div',{opacity:0,y:20,duration:0.6,stagger:0.3,ease:'power4.out'},1.6);",
       "captions": [
-        {
-          "start": 0,
-          "end": 6,
-          "text": "Three levels of behavior change"
-        },
-        {
-          "start": 6,
-          "end": 12,
-          "text": "Outcomes — what you get"
-        },
-        {
-          "start": 12,
-          "end": 18,
-          "text": "Process — what you do"
-        },
-        {
-          "start": 18,
-          "end": 28,
-          "text": "Identity — what you believe"
-        }
+        {"start": 0, "end": 4, "text": "Three levels of behavior change"},
+        {"start": 4, "end": 9, "text": "Outcomes what you get"},
+        {"start": 9, "end": 14, "text": "Process what you do"},
+        {"start": 14, "end": 18, "text": "Identity what you believe"},
+        {"start": 18, "end": 23, "text": "Focus on who you wish to become"}
       ]
     },
     {
       "index": 5,
-      "timestamp_end": 156,
+      "timestamp_end": 154,
       "duration": 26,
-      "narration_text": "If you get one percent better each day for one year you will end up thirty seven times better. Conversely if you get one percent worse each day for one year you will decline nearly down to zero. That is the mathematics of tiny habits. We expect progress to be linear. We put in the work and expect results immediately.",
-      "html": "<div class=\"scene\" id=\"s5\"><div class=\"scene-inner g1 cen\" style=\"max-width:1400px;\"><div class=\"cb\">Atomic Habits · The Framework</div><div class=\"g4\"><div class=\"card\" style=\"text-align:center;padding:24px 12px;\"><div class=\"cn\" style=\"color:#FACC15;font-size:30px;\">Cue</div><div class=\"ct\" style=\"font-size:26px;\">Make it <span class=\"hl\">obvious</span></div></div><div class=\"card\" style=\"text-align:center;padding:24px 12px;\"><div class=\"cn\" style=\"color:#A78BFA;font-size:30px;\">Craving</div><div class=\"ct\" style=\"font-size:26px;\">Make it <span class=\"hl\">attractive</span></div></div><div class=\"card\" style=\"text-align:center;padding:24px 12px;\"><div class=\"cn\" style=\"color:#34D399;font-size:30px;\">Response</div><div class=\"ct\" style=\"font-size:26px;\">Make it <span class=\"hl\">easy</span></div></div><div class=\"card\" style=\"text-align:center;padding:24px 12px;\"><div class=\"cn\" style=\"color:#FB923C;font-size:30px;\">Reward</div><div class=\"ct\" style=\"font-size:26px;\">Make it <span class=\"hl\">satisfying</span></div></div></div></div></div>",
-      "animations": "tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.3);tl.from(R+' .card',{opacity:0,y:20,duration:0.7,ease:'power4.out',stagger:0.1},0.8);",
+      "narration_text": "Habits are the compound interest of self improvement. One percent daily is not small. It is transformative.",
+      "html": "<h1 class=\"h1\" style=\"font-size:116px;\"><span class=\"kw\">Compound</span><br>interest.</h1><div class=\"divider\"></div>",
+      "animations": "tl.to('#orb-1',{x:-200,y:-100,scale:1.5,duration:DUR,ease:'sine.inOut'},0);tl.to('#orb-2',{x:200,y:200,scale:1.3,duration:DUR,ease:'sine.inOut'},0);tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.2);tl.from(R+' .h1',{opacity:0,y:50,scale:0.95,duration:1.2,ease:'power4.out'},0.5);tl.from(R+' .divider',{scaleX:0,transformOrigin:'left center',duration:0.8,ease:'power4.out'},1.4);",
       "captions": [
-        {
-          "start": 0,
-          "end": 6,
-          "text": "Make it obvious"
-        },
-        {
-          "start": 6,
-          "end": 12,
-          "text": "Make it attractive"
-        },
-        {
-          "start": 12,
-          "end": 18,
-          "text": "Make it easy"
-        },
-        {
-          "start": 18,
-          "end": 26,
-          "text": "Make it satisfying"
-        }
+        {"start": 0, "end": 4, "text": "Habits are the compound interest"},
+        {"start": 4, "end": 9, "text": "of self improvement"},
+        {"start": 9, "end": 13, "text": "One percent daily is not small"},
+        {"start": 13, "end": 17, "text": "It is transformative"}
       ]
     },
     {
       "index": 6,
-      "timestamp_end": 211,
+      "timestamp_end": 213,
       "duration": 55,
-      "narration_text": "If you get one percent better each day for one year you will end up thirty seven times better. Conversely if you get one percent worse each day for one year you will decline nearly down to zero. That is the mathematics of tiny habits. We expect progress to be linear. We put in the work and expect results immediately.",
-      "html": "<div class=\"scene\" id=\"s6\"><div class=\"scene-inner g1 cen\" style=\"max-width:1100px;\"><div class=\"cb\">Atomic Habits · Chapter Summary</div><div style=\"display:flex;flex-direction:column;gap:20px;width:100%;\"><div class=\"card\" style=\"text-align:center;\"><div class=\"ct\" style=\"font-size:32px;\">1. Habits <span class='hl'>compound</span></div></div><div class=\"card\" style=\"text-align:center;\"><div class=\"ct\" style=\"font-size:32px;\">2. Systems over <span class='hl'>goals</span></div></div><div class=\"card\" style=\"text-align:center;\"><div class=\"ct\" style=\"font-size:32px;\">3. Your <span style='color:#A78BFA;'>identity</span> drives everything</div></div></div></div></div>",
-      "animations": "tl.from(R+' .cb',{opacity:0,y:-15,duration:0.6,ease:'power4.out'},0.3);tl.from(R+' .card',{opacity:0,y:20,duration:0.7,ease:'power4.out',stagger:0.15},0.8);",
+      "narration_text": "Focus on systems not goals. Identity shift is the ultimate form of habit change.",
+      "html": "<h1 class=\"h1\" style=\"font-size:130px;\"><span class=\"kw\">Systems</span><br>not goals.</h1><div class=\"divider\"></div><div style=\"font-family:'Inter',sans-serif;font-size:42px;font-weight:300;color:#CBD5E1;margin-top:20px;max-width:1200px;\">Identity shift is the ultimate form of habit change.</div>",
+      "animations": "tl.to('#orb-1',{x:300,y:-200,scale:1.4,duration:DUR,ease:'sine.inOut'},0);tl.to('#orb-2',{x:-300,y:200,scale:1.5,duration:DUR,ease:'sine.inOut'},0);tl.to('#orb-3',{x:200,y:100,scale:1.6,duration:DUR,ease:'sine.inOut'},0);tl.from(R+' .cb',{opacity:0,y:-20,duration:0.8,ease:'power4.out'},0.2);tl.from(R+' .h1',{opacity:0,y:60,scale:0.94,duration:1.4,ease:'power4.out'},0.5);tl.from(R+' .divider',{scaleX:0,transformOrigin:'left center',duration:0.8,ease:'power4.out'},1.6);tl.from(R+' .h1 + .divider + div',{opacity:0,y:20,duration:1.0,ease:'power4.out'},2.0);",
       "captions": [
-        {
-          "start": 0,
-          "end": 8,
-          "text": "Habits are the compound interest"
-        },
-        {
-          "start": 8,
-          "end": 16,
-          "text": "Focus on systems not goals"
-        },
-        {
-          "start": 16,
-          "end": 28,
-          "text": "Identity shift is the ultimate form of habit change"
-        },
-        {
-          "start": 28,
-          "end": 40,
-          "text": "When you believe, you stop needing motivation"
-        },
-        {
-          "start": 40,
-          "end": 55,
-          "text": "This is the foundation of Atomic Habits"
-        }
+        {"start": 0, "end": 5, "text": "Focus on systems not goals"},
+        {"start": 5, "end": 12, "text": "Identity shift is the ultimate form of habit change"}
       ]
     }
   ]

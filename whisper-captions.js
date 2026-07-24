@@ -36,28 +36,16 @@ function run(cmd, args, opts = {}) {
 // ─── Whisper backends ───────────────────────────────────
 
 async function detectWhisper() {
-  // Try whisper.cpp first (fastest on CPU)
-  try {
-    const { stdout } = await run('whisper', ['--help'], { timeout: 5000 });
-    return { backend: 'whisper-cpp', binary: 'whisper' };
-  } catch {}
-
   // Try faster-whisper via Python
   try {
-    const { stdout } = await run('python', ['-c', 'import faster_whisper; print("ok")'], { timeout: 5000 });
+    const { stdout } = await run('python', ['-c', 'import faster_whisper; print("ok")'], { timeout: 15000 });
     return { backend: 'faster-whisper', binary: 'python' };
   } catch {}
 
   // Try openai-whisper via Python
   try {
-    const { stdout } = await run('python', ['-c', 'import whisper; print("ok")'], { timeout: 5000 });
+    const { stdout } = await run('python', ['-c', 'import whisper; print("ok")'], { timeout: 15000 });
     return { backend: 'openai-whisper', binary: 'python' };
-  } catch {}
-
-  // Try uvx (cached faster-whisper)
-  try {
-    const { stdout } = await run('uvx', ['--help'], { timeout: 5000 });
-    return { backend: 'uvx-faster-whisper', binary: 'uvx' };
   } catch {}
 
   return null;
@@ -238,18 +226,25 @@ async function generateCaptions(narrationPath, sceneTimestamps, sceneDir, sceneD
   
   console.log(`  Got ${allWords.length} word timestamps across ${result.segments.length} segments`);
   
-  // Map words to scenes by time boundaries
+  // Map words to scenes by time boundaries (inclusive of boundary, last scene gets rest)
   let wordIdx = 0;
   for (let i = 0; i < sceneTimestamps.length; i++) {
     const startTime = i === 0 ? 0 : sceneTimestamps[i-1];
     const endTime = sceneTimestamps[i];
+    const isLastScene = i === sceneTimestamps.length - 1;
     const sceneWords = [];
-    
-    while (wordIdx < allWords.length && allWords[wordIdx].start < endTime) {
-      sceneWords.push(allWords[wordIdx]);
-      wordIdx++;
+
+    // Take words with start < endTime, OR if last scene, take ALL remaining words
+    while (wordIdx < allWords.length) {
+      const w = allWords[wordIdx];
+      if (isLastScene || w.start < endTime) {
+        sceneWords.push(w);
+        wordIdx++;
+      } else {
+        break;
+      }
     }
-    
+
     const captions = groupWordsIntoCaps(sceneWords, sceneDurations[i]);
     const s = path.join(sceneDir, `scene_${i}`);
     fs.mkdirSync(s, { recursive: true });
