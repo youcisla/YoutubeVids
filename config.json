@@ -7,8 +7,9 @@
   "quality": "high",
   "canvas_width": 1920,
   "canvas_height": 1080,
+  "bg_music": null,
   "youtube": {
-    "publish_type": "PUBLIC",
+    "publish_type": "public",
     "channel": "Book Summary Channel",
     "upload_as_draft": true
   }

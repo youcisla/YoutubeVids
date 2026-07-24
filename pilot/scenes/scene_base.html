@@ -11,6 +11,9 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{width:1920px;height:1080px;overflow:hidden;font-family:'Inter',sans-serif;color:#F8FAFC;background:#0A0D16;}
 audio{display:none;}
+/* HyperFrames capture guard — hide everything until fonts/images are loaded */
+#main{visibility:hidden;}
+#main.ready{visibility:visible;}
 #bg-stage{position:absolute;inset:0;z-index:0;overflow:hidden;background:#0A0D16;}
 .bg-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.55;mix-blend-mode:screen;}
 #orb-1{width:900px;height:900px;background:radial-gradient(circle,#FACC15 0%,transparent 70%);top:-20%;left:-15%;}
@@ -46,6 +49,9 @@ audio{display:none;}
   {CONTENT}
 </div>
 <div id="cap-bar"><div id="cap-line"></div></div>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <script>
 window.__timelines = window.__timelines || {};
 const tl = gsap.timeline({ paused: true });
@@ -54,6 +60,18 @@ const DUR = {DUR};
 tl.to({}, { duration: DUR }, 0);
 {ANIMATIONS}
 window.__timelines["main"] = tl;
+
+// Pre-flight: wait for fonts + images before exposing composition.
+// Prevents black/blank frames when HyperFrames captures early.
+(function(){
+  const ready = () => document.getElementById('main').classList.add('ready');
+  const imgs = [...document.querySelectorAll('img')];
+  const imgPromises = imgs.map(img => img.complete ? Promise.resolve() : new Promise(res => { img.onload = img.onerror = res; }));
+  Promise.all([
+    (document.fonts && document.fonts.ready) || Promise.resolve(),
+    ...imgPromises,
+  ]).then(ready).catch(ready);
+})();
 </script>
 </body>
 </html>

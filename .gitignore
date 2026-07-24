@@ -3,6 +3,12 @@ node_modules/
 .pnp
 .pnp.js
 
+# Secrets — NEVER commit
+.env
+.env.local
+*.pem
+*.key
+
 # Build output
 dist/
 *.mp4

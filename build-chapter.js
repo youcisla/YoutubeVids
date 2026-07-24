@@ -114,15 +114,18 @@ function validateChapter(data) {
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
 
 // ─── Core pipeline functions ─────────────────────────────
-function buildCaptionJs(scene) {
-  // Build word-by-word kinetic captions from scene.captions
+function buildCaptionJs(scene, fps) {
+  // Build word-by-word kinetic captions from scene.captions.
+  // Snap all timestamps to exact frame boundaries to prevent drift over long renders.
   const captions = scene.captions || [];
   if (captions.length === 0) return '';
+  const frameDur = 1 / fps;
+  const snap = t => Math.round(t / frameDur) * frameDur;
   const lines = captions.map((c, i) => {
     const words = c.text.split(/\s+/).filter(Boolean);
     return JSON.stringify({
-      start: c.start,
-      end: c.end,
+      start: snap(c.start),
+      end: snap(c.end),
       words,
     });
   }).join(',\n  ');
@@ -169,7 +172,7 @@ function buildCaptionJs(scene) {
 function buildSceneHtml(scene, bookTitle, coverExt) {
   const base = fs.readFileSync(path.join(ROOT, 'pilot/scenes/scene_base.html'), 'utf8');
   const gsapSrc = CONFIG.gsap_source || 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.14.2/gsap.min.js';
-  const captionJs = buildCaptionJs(scene);
+  const captionJs = buildCaptionJs(scene, CONFIG.fps);
   const allAnims = scene.animations + '\n' + captionJs;
   return base
     .replace(/\{N\}/g, scene.index)
@@ -217,30 +220,59 @@ function formatSrtTime(sec) {
   return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${s.toFixed(3).replace('.',',')}`;
 }
 
-// ─── YouTube upload ─────────────────────────────────────
+// ─── YouTube upload (Data API v3 + OAuth2) ──────────────
+
+function loadEnv() {
+  const envPath = path.join(ROOT, '.env');
+  if (!fs.existsSync(envPath)) return;
+  for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
+    const m = line.match(/^\s*([A-Z_][A-Z0-9_]*)\s*=\s*(.*)\s*$/);
+    if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '');
+  }
+}
+
 async function uploadToYouTube(videoPath, title, description) {
-  console.log('  Uploading to YouTube...');
-  const { upload } = require('youtube-videos-uploader');
-  const email = process.env.YT_EMAIL || CONFIG.youtube?.email;
-  const pass = process.env.YT_PASS || CONFIG.youtube?.pass;
-  const recoveryEmail = process.env.YT_RECOVERY || CONFIG.youtube?.recovery;
-  if (!email || !pass) {
-    console.warn('  ⚠ YouTube credentials not set. Set YT_EMAIL / YT_PASS env vars or add youtube.email / youtube.pass to config.json.');
+  loadEnv();
+  const clientId = process.env.YT_CLIENT_ID;
+  const clientSecret = process.env.YT_CLIENT_SECRET;
+  const refreshToken = process.env.YT_REFRESH_TOKEN;
+  if (!clientId || !clientSecret || !refreshToken) {
+    console.warn('  ⚠ YouTube OAuth credentials not set.');
+    console.warn('  Run: node scripts/yt-auth.mjs (see .env.example)');
     return;
   }
-  const credentials = { email, pass, recoveryemail: recoveryEmail };
-  const video = {
-    path: videoPath,
-    title: title,
-    description: description || title,
-    channelName: CONFIG.youtube?.channel,
-    publishType: CONFIG.youtube?.publish_type || 'PUBLIC',
-    isNotForKid: false,
-    uploadAsDraft: true, // safe default — publish manually after review
-  };
-  const urls = await upload(credentials, [video]);
-  console.log(`  ✓ Published: ${urls[0]}`);
-  return urls[0];
+
+  console.log('  Uploading to YouTube...');
+  const { google } = require('googleapis');
+  const oauth2 = new google.auth.OAuth2(clientId, clientSecret, 'urn:ietf:wg:oauth:2.0:oob');
+  oauth2.setCredentials({ refresh_token: refreshToken });
+
+  const youtube = google.youtube({ version: 'v3', auth: oauth2 });
+  const fileSize = fs.statSync(videoPath).size;
+  const privacy = (CONFIG.youtube?.upload_as_draft ? 'private' : (CONFIG.youtube?.publish_type || 'public')).toLowerCase();
+
+  const res = await youtube.videos.insert({
+    part: 'snippet,status',
+    requestBody: {
+      snippet: {
+        title: title.slice(0, 100),
+        description: description || title,
+        categoryId: '27', // Education
+      },
+      status: { privacyStatus: privacy, selfDeclaredMadeForKids: false },
+    },
+    media: { body: fs.createReadStream(videoPath) },
+  }, {
+    onUploadProgress: e => {
+      const pct = Math.round((e.bytesRead / fileSize) * 100);
+      process.stdout.write(`\r  Upload: ${pct}%   `);
+    },
+  });
+  process.stdout.write('\n');
+  const videoId = res.data.id;
+  const url = `https://youtu.be/${videoId}`;
+  console.log(`  ✓ Uploaded (${privacy}): ${url}`);
+  return url;
 }
 
 // ─── Main build ──────────────────────────────────────────
@@ -392,7 +424,40 @@ async function buildChapter(book, chapterNum, keepTemp, noWhisper, doUpload) {
       outPath,
     ], { label: 'concat scenes' });
     fs.unlinkSync(playlistPath);
+
+    // 6b. Mix background music with auto-ducking (sidechaincompress)
+    const bgMusic = CONFIG.bg_music ? path.join(ROOT, CONFIG.bg_music) : null;
+    if (bgMusic && fs.existsSync(bgMusic)) {
+      console.log('  Mixing background music (auto-ducking)...');
+      const musicMix = path.join(sceneDir, `${baseName}_music.mp4`);
+      await ffmpeg([
+        '-y', '-i', outPath, '-i', bgMusic,
+        '-filter_complex',
+        `[1:a]volume=0.15[bg];[bg][0:a]sidechaincompress=threshold=0.05:ratio=8:attack=5:release=200[ducked];[0:a][ducked]amix=inputs=2:duration=first[a]`,
+        '-map', '0:v', '-map', '[a]',
+        '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k',
+        '-shortest',
+        musicMix,
+      ], { label: 'music ducking' });
+      fs.copyFileSync(musicMix, outPath);
+      fs.unlinkSync(musicMix);
+      console.log('  ✓ Music mixed');
+    }
+
     console.log(`✓ ${outPath}`);
+
+    // 6c. Generate thumbnail (frame at 2s)
+    const thumbPath = path.join(outDir, `${baseName}_thumb.jpg`);
+    try {
+      await ffmpeg([
+        '-y', '-ss', '2', '-i', outPath,
+        '-frames:v', '1', '-q:v', '3',
+        thumbPath,
+      ], { label: 'thumbnail' });
+      console.log(`  ✓ Thumbnail: ${thumbPath}`);
+    } catch (err) {
+      console.warn(`  ⚠ Thumbnail failed: ${err.message.slice(0, 100)}`);
+    }
 
     // 7. Upload if requested
     if (doUpload && outPath) {
@@ -433,7 +498,7 @@ FLAGS:
   --batch <name>     Render all chapters for a book
   --keep-temp        Keep temp files after render
   --no-whisper       Skip Whisper caption generation (use static .srt from JSON)
-  --upload           Upload finished MP4 to YouTube via youtube-uploader
+  --upload           Upload finished MP4 to YouTube (Data API v3 + OAuth2)
   --help             Show this message
 
 DEPENDENCIES:

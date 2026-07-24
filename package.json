@@ -7,16 +7,18 @@
     "build:ch": "node build-chapter.js --book atomic-habits --chapter",
     "build:batch": "node build-chapter.js --batch atomic-habits",
     "build:upload": "node build-chapter.js --batch atomic-habits --upload",
+    "yt:auth": "node scripts/yt-auth.mjs",
+    "ui": "cd ui && npm run start",
     "lint": "npx hyperframes lint",
     "validate": "npx hyperframes validate"
   },
   "dependencies": {
-    "youtube-videos-uploader": "^2.0.28"
+    "googleapis": "^144.0.0"
+  },
+  "optionalDependencies": {
+    "open": "^10.4.0"
   },
   "engines": {
     "node": ">=22"
-  },
-  "allowScripts": {
-    "puppeteer@14.4.1": true
   }
 }
