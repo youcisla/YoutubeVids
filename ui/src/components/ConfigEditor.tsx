@@ -3,12 +3,13 @@ import type { AppConfig } from '../types';
 
 interface Props {
   config: AppConfig;
-  onSave: (config: AppConfig) => void;
+  onSave: (config: AppConfig) => Promise<void>;
 }
 
 export default function ConfigEditor({ config, onSave }: Props) {
   const [local, setLocal] = useState<AppConfig>(config);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState('');
 
   useEffect(() => { setLocal(config); }, [config]);
 
@@ -20,24 +21,32 @@ export default function ConfigEditor({ config, onSave }: Props) {
   const updateYoutube = (key: string, value: any) => {
     setLocal(prev => ({
       ...prev,
-      youtube: { ...(prev.youtube || { publish_type: 'PUBLIC', channel: '', upload_as_draft: true }), [key]: value },
+      youtube: { ...(prev.youtube || { publish_type: 'public', channel: '', upload_as_draft: true }), [key]: value },
     }));
     setSaved(false);
   };
 
-  const handleSave = () => {
-    onSave(local);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+  const handleSave = async () => {
+    setSaveError('');
+    try {
+      await onSave(local);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (error) {
+      setSaveError(error instanceof Error ? error.message : 'Failed to save configuration');
+    }
   };
 
   return (
     <div className="max-w-2xl space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="font-heading font-semibold text-lg">Configuration</h2>
-        <button onClick={handleSave} className="btn-primary">
-          {saved ? '✓ Saved' : 'Save'}
-        </button>
+        <div className="flex items-center gap-3">
+          {saveError && <span role="alert" className="text-sm text-red-400">{saveError}</span>}
+          <button onClick={handleSave} className="btn-primary">
+            {saved ? '✓ Saved' : 'Save'}
+          </button>
+        </div>
       </div>
 
       {/* Voice */}
@@ -134,10 +143,10 @@ export default function ConfigEditor({ config, onSave }: Props) {
           </div>
           <div>
             <label className="block text-xs text-[#64748B] mb-1.5">Visibility</label>
-            <select value={local.youtube?.publish_type || 'PUBLIC'} onChange={e => updateYoutube('publish_type', e.target.value)} className="input-field">
-              <option value="PUBLIC">Public</option>
-              <option value="UNLISTED">Unlisted</option>
-              <option value="PRIVATE">Private</option>
+            <select value={local.youtube?.publish_type || 'public'} onChange={e => updateYoutube('publish_type', e.target.value)} className="input-field">
+              <option value="public">Public</option>
+              <option value="unlisted">Unlisted</option>
+              <option value="private">Private</option>
             </select>
           </div>
         </div>

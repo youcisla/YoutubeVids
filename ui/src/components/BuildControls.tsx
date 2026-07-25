@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { BookMeta, BuildOptions, BuildStatus } from '../types';
+import type { BookMeta, BuildStatus } from '../types';
 import { Play, RotateCcw, Settings2, AlertCircle, CheckCircle2 } from 'lucide-react';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
   onSelectChapter: (num: number) => void;
   flags: { keepTemp: boolean; noWhisper: boolean; upload: boolean };
   onFlagsChange: (f: { keepTemp: boolean; noWhisper: boolean; upload: boolean }) => void;
-  onBuild: () => Promise<(() => void) | undefined>;
+  onBuild: () => Promise<void>;
   status: BuildStatus;
 }
 

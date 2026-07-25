@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import type { BookMeta, AppConfig, BuildOptions, LogLine } from './types';
 import * as api from './lib/api';
 import Sidebar from './components/Sidebar';
@@ -8,6 +8,8 @@ import LiveLog from './components/LiveLog';
 import OutputPreview from './components/OutputPreview';
 
 export default function App() {
+  const cancelBuildRef = useRef<(() => void) | null>(null);
+  const [sessionReady, setSessionReady] = useState(false);
   const [books, setBooks] = useState<BookMeta[]>([]);
   const [config, setConfig] = useState<AppConfig | null>(null);
   const [selectedBook, setSelectedBook] = useState('');
@@ -19,17 +21,20 @@ export default function App() {
   const [flags, setFlags] = useState({ keepTemp: false, noWhisper: false, upload: false });
 
   useEffect(() => {
+    api.initializeSession().then(() => setSessionReady(true)).catch(console.error);
     api.fetchBooks().then(setBooks).catch(console.error);
     api.fetchConfig().then(setConfig).catch(console.error);
+    return () => cancelBuildRef.current?.();
   }, []);
 
   const handleBuild = useCallback(async () => {
-    if (!selectedBook || !selectedChapter) return;
+    if (!selectedBook || !selectedChapter || !sessionReady) return;
+    cancelBuildRef.current?.();
     setStatus('building');
     setLogs([]);
     setOutputUrl('');
 
-    const cancel = api.startBuild(
+    cancelBuildRef.current = api.startBuild(
       selectedBook,
       selectedChapter,
       flags,
@@ -43,8 +48,7 @@ export default function App() {
         setLogs(prev => [...prev, { timestamp: Date.now(), text: err, level: 'error' }]);
       },
     );
-    return cancel;
-  }, [selectedBook, selectedChapter, flags]);
+  }, [selectedBook, selectedChapter, sessionReady, flags]);
 
   const currentChapter = books
     .find(b => b.name === selectedBook)
@@ -93,7 +97,10 @@ export default function App() {
         {/* Content */}
         <div className="flex-1 overflow-auto p-6">
           {tab === 'config' && config && (
-            <ConfigEditor config={config} onSave={(c) => { setConfig(c); api.saveConfig(c); }} />
+            <ConfigEditor config={config} onSave={(nextConfig) => {
+              setConfig(nextConfig);
+              return api.saveConfig(nextConfig);
+            }} />
           )}
 
           {tab === 'build' && (
@@ -111,7 +118,7 @@ export default function App() {
                   status={status}
                 />
                 <OutputPreview
-                  outputUrl={outputFile}
+                  outputUrl={outputUrl || outputFile}
                   status={status}
                   book={selectedBook}
                   chapter={selectedChapter}

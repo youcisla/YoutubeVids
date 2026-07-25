@@ -2,6 +2,11 @@ import type { AppConfig, BookMeta, ChapterData } from '../types';
 
 const BASE = '/api';
 
+export async function initializeSession(): Promise<void> {
+  const res = await fetch(`${BASE}/session`);
+  if (!res.ok) throw new Error(`Failed to start local session: ${res.statusText}`);
+}
+
 export async function fetchBooks(): Promise<BookMeta[]> {
   const res = await fetch(`${BASE}/books`);
   if (!res.ok) throw new Error(`Failed to fetch books: ${res.statusText}`);
@@ -42,20 +47,24 @@ export function startBuild(
     chapter: String(chapter),
     keepTemp: String(flags.keepTemp),
     noWhisper: String(flags.noWhisper),
-    upload: String(flags.upload),
   });
   const url = `${BASE}/build?${params}`;
   const evtSource = new EventSource(url);
+  let finished = false;
 
   evtSource.onmessage = (event) => {
     try {
       const data = JSON.parse(event.data);
       if (data.type === 'log') {
         onLog(data.text);
+      } else if (data.type === 'warn') {
+        onLog(`Warning: ${data.text}`);
       } else if (data.type === 'done') {
+        finished = true;
         onDone(data.url);
         evtSource.close();
       } else if (data.type === 'error') {
+        finished = true;
         onError(data.text);
         evtSource.close();
       }
@@ -65,7 +74,7 @@ export function startBuild(
   };
 
   evtSource.onerror = () => {
-    onError('Connection lost');
+    if (!finished) onError('Connection lost');
     evtSource.close();
   };
 
