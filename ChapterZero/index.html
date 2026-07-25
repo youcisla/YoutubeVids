@@ -1,9 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hyperframes - Play Mode</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atomic Habits Teaser - ChapterZero</title>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
       body,
@@ -13,7 +13,7 @@
         width: 1920px;
         height: 1080px;
         overflow: hidden;
-        background-color: #ffffff;
+        background-color: #0a1633;
         font-family: "Nunito", sans-serif;
       }
 
@@ -24,7 +24,6 @@
       }
 
       #bg-comp,
-      #aroll-comp,
       #intro-comp,
       #stats-comp,
       #captions-comp {
@@ -39,10 +38,6 @@
         z-index: 1;
       }
 
-      #aroll-comp {
-        z-index: 10;
-      }
-
       #intro-comp {
         z-index: 100;
       }
@@ -55,153 +50,46 @@
         z-index: 200;
       }
 
-      #aroll-container {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 0;
-      }
-
-      #short_mag_cut {
-        border-radius: 16px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-        border: 8px solid #ffffff;
-      }
-
       #background-layer {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #ffffff;
-        z-index: 0;
+        inset: 0;
+        background-color: #0a1633;
       }
     </style>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:wght@900&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div
-      id="main-composition"
-      data-composition-id="main-video"
-      data-start="0"
-      data-duration="10"
-      data-width="1920"
-      data-height="1080"
-    >
-      <!-- Background Layer Composition -->
-      <div
-        id="bg-comp"
-        data-composition-id="background"
-        data-start="0"
-        data-duration="10"
-        data-width="1920"
-        data-height="1080"
-        data-track-index="1"
-      >
-        <div id="background-layer"></div>
+    <div data-hf-id="hf-x6i9" id="main-composition" data-composition-id="main-video" data-start="0" data-duration="15" data-width="1920" data-height="1080">
+      <!-- Framework-owned narration audio -->
+      <audio id="narration-audio" class="clip" data-start="0" data-duration="15" data-track-index="0" src="assets/atomic-habits-teaser.mp3"></audio>
+
+      <!-- Background Layer Composition (dark navy base) -->
+      <div data-hf-id="hf-z9c4" id="bg-comp" data-composition-id="background" data-start="0" data-duration="15" data-width="1920" data-height="1080" data-track-index="1">
+        <div data-hf-id="hf-0hdx" id="background-layer"></div>
         <style>
           #background-layer {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #ffffff;
+            inset: 0;
+            background-color: #0a1633;
           }
         </style>
         <script>
           (function () {
             const tl = gsap.timeline({ paused: true });
             const bg = document.getElementById("background-layer");
-            // Sync with A-roll framing 3 (4.659s)
-            tl.to(bg, { backgroundColor: "#0057FF", duration: 0.5 }, 4.659);
-            // Sync with A-roll framing 4 (8.88s)
-            tl.to(bg, { backgroundColor: "#FFFFFF", duration: 0.5 }, 8.88);
+            // Subtle deepen into the accumulation beat, ease back for the CTA. Navy throughout.
+            tl.to(bg, { backgroundColor: "#0b1d4d", duration: 1.2, ease: "power2.inOut" }, 2.5);
+            tl.to(bg, { backgroundColor: "#0a1633", duration: 1.2, ease: "power2.inOut" }, 11.5);
+            window.__timelines = window.__timelines || {};
             window.__timelines["background"] = tl;
           })();
         </script>
       </div>
 
-      <!-- A-roll Layer Composition -->
-      <div
-        id="aroll-comp"
-        data-composition-id="aroll-layer"
-        data-duration="10"
-        data-width="1920"
-        data-height="1080"
-        data-track-index="10"
-      >
-        <div id="aroll-container">
-          
-        </div>
-        
-        <style>
-          #aroll-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          }
-          #short_mag_cut {
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-            border: 8px solid #ffffff;
-          }
-        </style>
-        <script>
-          (function () {
-            const tl = gsap.timeline({ paused: true });
-            const container = document.getElementById("aroll-container");
-            gsap.set(container, { y: -1100, scale: 0.8 });
-            tl.to(container, { y: 0, duration: 1.2, ease: "elastic.out(1, 0.6)" }, 0);
-            tl.to(container, { scale: 1.4, x: -300, duration: 1, ease: "back.out(1.7)" }, 1.839);
-            tl.to(container, { scale: 0.7, x: 400, duration: 1, ease: "back.out(1.7)" }, 4.659);
-            tl.to(container, { scale: 0.9, x: 0, duration: 1, ease: "back.out(1.7)" }, 8.88);
-            window.__timelines["aroll-layer"] = tl;
-          })();
-        </script>
-      </div>
-
-      <!-- Compositions -->
-      <div
-        id="intro-comp"
-        data-composition-id="intro"
-        data-composition-src="compositions/intro.html"
-        data-start="0"
-        data-duration="10"
-        data-width="1920"
-        data-height="1080"
-        data-track-index="100"
-      ></div>
-      <div
-        id="captions-comp"
-        data-composition-id="captions"
-        data-composition-src="compositions/captions.html"
-        data-start="0"
-        data-duration="10"
-        data-width="1920"
-        data-height="1080"
-        data-track-index="200"
-      ></div>
-      <div
-        id="stats-comp"
-        data-composition-id="stats"
-        data-composition-src="compositions/stats.html"
-        data-start="0"
-        data-duration="10"
-        data-width="1920"
-        data-height="1080"
-        data-track-index="150"
-      ></div>
+      <!-- Sub-compositions -->
+      <div data-hf-id="hf-icdj" id="intro-comp" data-composition-id="intro" data-composition-src="compositions/intro.html" data-start="0" data-duration="15" data-width="1920" data-height="1080" data-track-index="100"></div>
+      <div data-hf-id="hf-5n3d" id="stats-comp" data-composition-id="stats" data-composition-src="compositions/stats.html" data-start="0" data-duration="15" data-width="1920" data-height="1080" data-track-index="150"></div>
+      <div data-hf-id="hf-pwud" id="captions-comp" data-composition-id="captions" data-composition-src="compositions/captions.html" data-start="0" data-duration="15" data-width="1920" data-height="1080" data-track-index="200"></div>
 
       <script>
         window.__timelines = window.__timelines || {};

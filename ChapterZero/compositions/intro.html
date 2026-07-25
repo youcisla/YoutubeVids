@@ -1,41 +1,91 @@
 <template id="intro-template">
   <div
-    id="intro-comp"
+    id="intro-root"
     data-composition-id="intro"
     data-start="0"
-    data-duration="10"
+    data-duration="15"
     data-width="1920"
     data-height="1080"
   >
-    <div class="intro-container">
-      <h1 class="title">HYPERFRAMES</h1>
+    <!-- Hook (0-2.5s) -->
+    <div class="scene hook">
+      <div class="hook-line" id="hook-what">WHAT IF</div>
+      <div class="hook-percent" id="hook-percent">1%</div>
+      <div class="hook-line" id="hook-enough">WAS ENOUGH?</div>
+    </div>
+
+    <!-- CTA end card (from 11.5s, held to 15s) -->
+    <div class="scene cta" id="cta">
+      <div class="cta-headline">SMALL HABITS. <span class="gold">BIG RESULTS.</span></div>
+      <div class="cta-sub">WATCH THE FULL ATOMIC HABITS SUMMARY</div>
+      <div class="cta-brand">EDU CHANNEL</div>
     </div>
 
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@900&display=swap");
-
-      [data-composition-id="intro"] .intro-container {
-        width: 100%;
-        height: 100%;
+      [data-composition-id="intro"] .scene {
+        position: absolute;
+        inset: 0;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
+        text-align: center;
         pointer-events: none;
+        font-family: "Nunito", sans-serif;
       }
 
-      [data-composition-id="intro"] .title {
-        font-family: "Nunito", sans-serif;
+      /* --- Hook --- */
+      [data-composition-id="intro"] .hook-line {
+        font-weight: 800;
+        font-size: 120px;
+        letter-spacing: 6px;
+        color: #f5f3ec;
+        line-height: 1;
+        margin: 8px 0;
+        visibility: hidden;
+      }
+
+      [data-composition-id="intro"] .hook-percent {
         font-weight: 900;
-        font-size: 180px;
-        color: #ff2d8a; /* Hot Pink */
-        text-transform: uppercase;
-        transform: rotate(-5deg); /* Tilted 5 degrees */
-        margin: 0;
-        padding: 20px;
-        /* Layered offset shadow for depth without suffocating letterforms */
-        filter: drop-shadow(8px 8px 0 #ffffff) drop-shadow(15px 15px 0 rgba(0, 0, 0, 0.1));
-        opacity: 0;
-        scale: 0;
+        font-size: 420px;
+        line-height: 0.9;
+        color: #ffc83d; /* dominant gold */
+        margin: 4px 0;
+        visibility: hidden;
+      }
+
+      /* --- CTA --- */
+      [data-composition-id="intro"] .cta {
+        visibility: hidden;
+      }
+
+      [data-composition-id="intro"] .cta-headline {
+        font-weight: 900;
+        font-size: 104px;
+        line-height: 1.02;
+        color: #f5f3ec;
+        max-width: 1500px;
+        margin-bottom: 34px;
+      }
+
+      [data-composition-id="intro"] .cta-headline .gold {
+        color: #ffc83d;
+      }
+
+      [data-composition-id="intro"] .cta-sub {
+        font-weight: 800;
+        font-size: 46px;
+        letter-spacing: 2px;
+        color: #f5f3ec;
+        max-width: 1400px;
+        margin-bottom: 44px;
+      }
+
+      [data-composition-id="intro"] .cta-brand {
+        font-weight: 900;
+        font-size: 40px;
+        letter-spacing: 10px;
+        color: #ffc83d;
       }
     </style>
 
@@ -43,62 +93,51 @@
     <script>
       (function () {
         const tl = gsap.timeline({ paused: true });
+        const q = (sel) => '[data-composition-id="intro"] ' + sel;
 
-        // --- INTRO SEQUENCE ---
-        // Animation: Scale-up bounce (0% to 110% to 100%) with elastic overshoot
-        // Starts at 0.5s, lasts until 3s
-        tl.to('[data-composition-id="intro"] .title', {
-          opacity: 1,
-          scale: 1.1,
-          duration: 0.6,
-          ease: "back.out(1.7)",
-          delay: 0.5,
-        })
-          .to('[data-composition-id="intro"] .title', {
-            scale: 1,
-            duration: 0.4,
-            ease: "elastic.out(1, 0.3)",
-          })
-          // Ambient motion
-          .to(
-            '[data-composition-id="intro"] .title',
-            {
-              rotation: "-3deg",
-              duration: 1,
-              repeat: 1,
-              yoyo: true,
-              ease: "sine.inOut",
-            },
-            "-=0.5",
-          )
-          // Exit intro
-          .to(
-            '[data-composition-id="intro"] .title',
-            {
-              opacity: 0,
-              scale: 0.5,
-              duration: 0.3,
-              ease: "power2.in",
-            },
-            1.4,
-          );
+        // --- HOOK: 0-2.5s (power4.out / expo.out only) ---
+        tl.fromTo(
+          q(".hook-line#hook-what"),
+          { autoAlpha: 0, y: 40 },
+          { autoAlpha: 1, y: 0, duration: 0.4, ease: "expo.out" },
+          0.15,
+        );
 
-        // --- END CARD SEQUENCE ---
-        // Appears at 14.619s (after Moment 3 finishes exiting at 14.239 + 0.3)
+        // Dominant gold 1% — visible well before the 1.2s assertion
+        tl.fromTo(
+          "#hook-percent",
+          { autoAlpha: 0, scale: 0.6 },
+          { autoAlpha: 1, scale: 1, duration: 0.45, ease: "power4.out", transformOrigin: "center center" },
+          0.55,
+        );
+
+        tl.fromTo(
+          q(".hook-line#hook-enough"),
+          { autoAlpha: 0, y: 40 },
+          { autoAlpha: 1, y: 0, duration: 0.4, ease: "expo.out" },
+          1.1,
+        );
+
+        // Hook exit before 2.5s
         tl.to(
-          '[data-composition-id="intro"] .title',
-          {
-            opacity: 1,
-            scale: 1.1,
-            duration: 0.6,
-            ease: "back.out(1.7)",
-          },
-          14.619,
-        ).to('[data-composition-id="intro"] .title', {
-          scale: 1,
-          duration: 0.4,
-          ease: "elastic.out(1, 0.3)",
-        });
+          q(".hook"),
+          { autoAlpha: 0, y: -30, duration: 0.35, ease: "power2.in" },
+          2.1,
+        );
+
+        // --- CTA: settles from 11.5s, held through 15s (no exit = stays in frame) ---
+        tl.fromTo(
+          "#cta",
+          { autoAlpha: 0 },
+          { autoAlpha: 1, duration: 0.7, ease: "expo.out" },
+          11.6,
+        );
+        tl.fromTo(
+          q(".cta-headline, .cta-sub, .cta-brand"),
+          { y: 24 },
+          { y: 0, duration: 0.7, ease: "expo.out", stagger: 0.06 },
+          11.6,
+        );
 
         window.__timelines = window.__timelines || {};
         window.__timelines["intro"] = tl;

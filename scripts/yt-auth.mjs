@@ -11,16 +11,22 @@
  *   Add yourself as a Test User
  *
  * Usage:
- *   YT_CLIENT_ID=xxx YT_CLIENT_SECRET=yyy node scripts/yt-auth.mjs
+ *   npm run yt:auth                 # reads .env from project root
+ *   YT_CLIENT_ID=xxx YT_CLIENT_SECRET=yyy node scripts/yt-auth.mjs   # inline override
  */
 import { google } from 'googleapis';
 import http from 'http';
 import { URL } from 'url';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const { loadRootEnv } = require('../lib/env.js');
+loadRootEnv();
 
 const clientId = process.env.YT_CLIENT_ID;
 const clientSecret = process.env.YT_CLIENT_SECRET;
 if (!clientId || !clientSecret) {
-  console.error('Set YT_CLIENT_ID and YT_CLIENT_SECRET env vars first.');
+  console.error('Set YT_CLIENT_ID and YT_CLIENT_SECRET in .env first.');
   process.exit(1);
 }
 

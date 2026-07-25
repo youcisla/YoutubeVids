@@ -11,9 +11,9 @@ node_modules/
 
 # Build output
 dist/
-*.mp4
-*.wav
-*.mp3
+# *.mp4
+# *.wav
+# *.mp3
 *.ogg
 *.png
 *.jpg
