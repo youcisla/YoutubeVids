@@ -4,7 +4,7 @@
 
 Programmatic video pipeline that turns structured JSON chapter data into polished, narrated, captioned YouTube videos. No stock footage, no human faces, no AI slop — every frame is a HyperFrames + GSAP + FFmpeg render of HTML you control.
 
-**Static UI preview:** https://chapter-zero-studio.vercel.app *(Vercel deploys the React UI as a showcase — it has no backend, so build actions are disabled there. To use the app for real, run it locally.)*
+**Static UI preview:** https://youtube-book-vids.vercel.app/ *(Vercel deploys the React UI as a showcase — it has no backend, so build actions are disabled there. To use the app for real, run it locally.)*
 
 ## What it does
 

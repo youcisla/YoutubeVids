@@ -1,9 +1,13 @@
 {
   "provider": "edge-tts",
-  "voice": "am_adam",
-  "speed": 0.9,
-  "language": "en-us",
-  "durationSec": null,
-  "cacheKey": "d53f6fffc822b148bbc19315f3dbb43aae347d394ad05bb54e3169079b1c17a6",
-  "generatedAt": "2026-07-26T16:21:39.426Z"
+  "voiceId": "IRHApOXLvnW57QJPQH2P",
+  "modelId": "eleven_multilingual_v2",
+  "settings": {
+    "stability": 0.42,
+    "similarity_boost": 0.78,
+    "style": 0.2,
+    "use_speaker_boost": true
+  },
+  "cacheKey": "c0f1aab6d4ce862a0b0a7e945bcea4bbe4174085685d836b0f0c7dccd2c11337",
+  "generatedAt": "2026-07-26T16:25:46.852Z"
 }
