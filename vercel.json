@@ -3,6 +3,11 @@
   "buildCommand": "cd ui && npm install --no-audit --no-fund && npm run build",
   "outputDirectory": "ui/dist",
   "framework": null,
+  "build": {
+    "env": {
+      "VITE_DEMO": "true"
+    }
+  },
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ],

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { BookMeta, AppConfig, BuildOptions, LogLine } from './types';
 import * as api from './lib/api';
+import { IS_DEMO } from './lib/mock';
 import Sidebar from './components/Sidebar';
 import ConfigEditor from './components/ConfigEditor';
 import BuildControls from './components/BuildControls';
@@ -14,7 +15,8 @@ const SETUP_DOC_URL = 'https://github.com/youcisla/YoutubeVids/blob/main/docs/SE
 export default function App() {
   const cancelBuildRef = useRef<(() => void) | null>(null);
   const [sessionReady, setSessionReady] = useState(false);
-  const [isPreview, setIsPreview] = useState(false);
+  const [isPreview, setIsPreview] = useState(IS_DEMO);
+  const showPreviewOnly = isPreview && !IS_DEMO;
   const [books, setBooks] = useState<BookMeta[]>([]);
   const [config, setConfig] = useState<AppConfig | null>(null);
   const [selectedBook, setSelectedBook] = useState('');
@@ -111,7 +113,7 @@ export default function App() {
             }} />
           )}
 
-          {tab === 'build' && isPreview && (
+          {tab === 'build' && showPreviewOnly && (
             <div className="flex flex-col items-center justify-center text-center py-20 gap-4 max-w-xl mx-auto">
               <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl font-bold">
                 !

@@ -1,31 +1,37 @@
 import type { AppConfig, BookMeta, ChapterData } from '../types';
+import { IS_DEMO, mockInitializeSession, mockFetchBooks, mockFetchChapter, mockFetchConfig, mockSaveConfig, mockStartBuild } from './mock';
 
 const BASE = '/api';
 
 export async function initializeSession(): Promise<void> {
+  if (IS_DEMO) return mockInitializeSession();
   const res = await fetch(`${BASE}/session`);
   if (!res.ok) throw new Error(`Failed to start local session: ${res.statusText}`);
 }
 
 export async function fetchBooks(): Promise<BookMeta[]> {
+  if (IS_DEMO) return mockFetchBooks();
   const res = await fetch(`${BASE}/books`);
   if (!res.ok) throw new Error(`Failed to fetch books: ${res.statusText}`);
   return res.json();
 }
 
 export async function fetchChapter(book: string, chapter: number): Promise<ChapterData> {
+  if (IS_DEMO) return mockFetchChapter(book, chapter);
   const res = await fetch(`${BASE}/books/${book}/${String(chapter).padStart(2, '0')}.json`);
   if (!res.ok) throw new Error(`Failed to fetch chapter: ${res.statusText}`);
   return res.json();
 }
 
 export async function fetchConfig(): Promise<AppConfig> {
+  if (IS_DEMO) return mockFetchConfig();
   const res = await fetch(`${BASE}/config`);
   if (!res.ok) throw new Error(`Failed to fetch config: ${res.statusText}`);
   return res.json();
 }
 
 export async function saveConfig(config: AppConfig): Promise<void> {
+  if (IS_DEMO) return mockSaveConfig(config);
   const res = await fetch(`${BASE}/config`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -42,6 +48,7 @@ export function startBuild(
   onDone: (url?: string) => void,
   onError: (err: string) => void
 ): () => void {
+  if (IS_DEMO) return mockStartBuild(book, chapter, flags, onLog, onDone, onError);
   const params = new URLSearchParams({
     book,
     chapter: String(chapter),
