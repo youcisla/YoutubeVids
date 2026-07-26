@@ -1,9 +1,13 @@
 {
-  "provider": "kokoro",
-  "voice": "am_adam",
-  "speed": 0.9,
-  "language": "en-us",
-  "durationSec": 5.141333333333334,
-  "cacheKey": "5931655f9cd5df9e8a6536096172a3e88ed343c83ae423a4209e96c9e3a61219",
-  "generatedAt": "2026-07-26T14:32:54.367Z"
+  "provider": "edge-tts",
+  "voiceId": "IRHApOXLvnW57QJPQH2P",
+  "modelId": "eleven_multilingual_v2",
+  "settings": {
+    "stability": 0.42,
+    "similarity_boost": 0.78,
+    "style": 0.2,
+    "use_speaker_boost": true
+  },
+  "cacheKey": "c0f1aab6d4ce862a0b0a7e945bcea4bbe4174085685d836b0f0c7dccd2c11337",
+  "generatedAt": "2026-07-25T16:34:40.011Z"
 }

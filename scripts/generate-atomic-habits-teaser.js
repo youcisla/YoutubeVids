@@ -4,16 +4,15 @@
  * narration, metadata, and scene-relative captions.
  *
  * Pipeline:
- *   1. Compute cache key from { text, voice, model, language, seed, ... }.
+ *   1. Compute cache key from { text, voiceId, modelId, settings }.
  *   2. If a matching audio file exists and --force is not set, treat as cache hit.
- *   3. Otherwise, call OmniVoice-Studio's OpenAI-compatible /v1/audio/speech
- *      endpoint. On failure, fall back to edge-tts (which also writes an SRT
- *      sidecar in the same invocation).
+ *   3. Otherwise, attempt ElevenLabs; on failure or missing credentials, fall
+ *      back to edge-tts (writes both mp3 and SRT subtitle sidecar in one call).
  *   4. Atomic write: write to a `.tmp` sidecar then rename to the final mp3.
- *   5. Persist metadata sidecar (provider, voice, model, language, seed,
- *      cacheKey, generatedAt) — never the API key.
+ *   5. Persist metadata sidecar (provider, voice, model, settings, cacheKey,
+ *      timestamp) — never the API key.
  *   6. Captions are NEVER silently empty:
- *      - OmniVoice path: parses the SRT sidecar OmniVoice produces alongside mp3.
+ *      - ElevenLabs path: title-rejected if whisper captionImpl returns empty.
  *      - Edge TTS path: parses the SRT sidecar produced by edge-tts'
  *        --write-subtitles flag in the same generation call; rejects if empty.
  *
@@ -26,25 +25,35 @@ const fs = require('node:fs');
 const path = require('node:path');
 const os = require('node:os');
 const { spawn } = require('node:child_process');
-const { loadRootEnv } = require('../lib/env');
-const { synthesizeKokoro, buildProportionalCaptions, kokoroCacheKey, DEFAULT_VOICE, DEFAULT_LANG } = require('../lib/kokoro-tts');
+const { narrationCacheKey, narrateWithElevenLabs } = require('../lib/elevenlabs-tts');
+const whisper = require('../whisper-captions');
 
 const ROOT = path.resolve(__dirname, '..');
 
-const TEASER_TEXT = "Get one percent better, every day. After one year... you'll be thirty-seven times better.";
+const TEASER_TEXT = "What if one percent was enough? Get one percent better each day. After one year, you're thirty-seven times better. Small habits. Big results. Watch the full summary.";
 const ASSET_BASENAME = 'atomic-habits-teaser';
 const SCENE_DURATION = 15;
-const DEFAULT_LANGUAGE = 'en';
-// ponytail: 0.9 floor of natural stretch. Real Adam ~150 WPM; this teases
-// down to ~111 WPM (capped by Kokoro's per-phoneme natural rate + the one
-// "..." pause after the hook). Closing the gap needs either shorter copy
-// or a model trained on slower delivery, not more speed-knob work.
-const DEFAULT_SPEED = 0.9;
-// Adam-alike (ElevenLabs) → Kokoro voice am_adam.
-const DEFAULT_VOICE_ID = DEFAULT_VOICE;
+const DEFAULT_MODEL_ID = 'eleven_multilingual_v2';
+const VOICE_SETTINGS = Object.freeze({
+  stability: 0.42,
+  similarity_boost: 0.78,
+  style: 0.2,
+  use_speaker_boost: true,
+});
 
 // ponytail: env file is gitignored and parsed line-by-line (same regex as
 // build-chapter.js) so we never ship a dotenv dep for a one-file read.
+function loadRootEnv() {
+  const envPath = path.join(ROOT, '.env');
+  if (!fs.existsSync(envPath)) return;
+  for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
+    const m = line.match(/^\s*([A-Z_][A-Z0-9_]*)\s*=\s*(.*)\s*$/);
+    if (m && !process.env[m[1]]) {
+      process.env[m[1]] = m[2].replace(/^["']|["']$/g, '');
+    }
+  }
+}
+
 function readRootConfig() {
   const cfgPath = path.join(ROOT, 'config.json');
   if (!fs.existsSync(cfgPath)) return {};
@@ -129,27 +138,31 @@ function validateCaptions(captions, sceneDuration = SCENE_DURATION) {
     .sort((a, b) => a.start - b.start);
 }
 
-async function generateCaptionsForProvider({ provider, audioPath, text, durationSec }) {
-  if (provider === 'kokoro') {
-    // Kokoro emits audio only — derive captions proportionally from the known
-    // script over the measured duration.
-    const validated = validateCaptions(buildProportionalCaptions({ text, durationSec }));
-    if (validated.length === 0) throw new Error('kokoro produced zero captions');
-    return validated;
-  }
+async function generateCaptionsForProvider({ provider, audioPath, captionImpl, sceneDir }) {
   if (provider === 'edge-tts') {
     const srtPath = `${audioPath}.srt`;
     if (!fs.existsSync(srtPath)) {
-      throw new Error(`${provider} did not write SRT sidecar at ${srtPath}`);
+      throw new Error(`edge-tts did not write SRT sidecar at ${srtPath}`);
     }
     const parsed = parseSrt(fs.readFileSync(srtPath, 'utf8'));
     const validated = validateCaptions(parsed);
     if (validated.length === 0) {
-      throw new Error(`${provider} SRT parsed into zero captions`);
+      throw new Error('edge-tts SRT parsed into zero captions');
     }
     return validated;
   }
-  throw new Error(`unknown provider: ${provider}`);
+  // ElevenLabs (or any other whisper-based) path.
+  let scenes;
+  try {
+    scenes = await captionImpl(audioPath, [SCENE_DURATION], sceneDir, [SCENE_DURATION]);
+  } catch (err) {
+    throw new Error(`caption generation failed: ${err.message}`);
+  }
+  const validated = validateCaptions(scenes && scenes[0] ? scenes[0] : []);
+  if (validated.length === 0) {
+    throw new Error('caption generation produced no captions (empty result)');
+  }
+  return validated;
 }
 
 async function generateTeaserAudio({
@@ -158,29 +171,33 @@ async function generateTeaserAudio({
   tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'teaser-')),
   fetchImpl = fetch,
   edgeTtsImpl = defaultEdgeTts,
+  captionImpl = whisper.generateCaptions,
   config = readRootConfig(),
   log = () => {},
   force = false,
 } = {}) {
   fs.mkdirSync(assetsDir, { recursive: true });
 
-  const voiceId = env.KOKORO_VOICE || DEFAULT_VOICE_ID;
-  const language = env.KOKORO_LANG || DEFAULT_LANG;
-  const speed = env.KOKORO_SPEED ? Number(env.KOKORO_SPEED) : DEFAULT_SPEED;
-  const cacheKey = kokoroCacheKey({ text: TEASER_TEXT, voice: voiceId, speed, lang: language });
+  const apiKey = env.ELEVENLABS_API_KEY;
+  const voiceId = env.ELEVENLABS_VOICE_ID;
+  const modelId = env.ELEVENLABS_MODEL_ID || DEFAULT_MODEL_ID;
+  const cacheKey = narrationCacheKey({
+    text: TEASER_TEXT,
+    voiceId,
+    modelId,
+    settings: VOICE_SETTINGS,
+  });
 
   const audioPath = path.join(assetsDir, `${ASSET_BASENAME}.mp3`);
   const metaPath = path.join(assetsDir, `${ASSET_BASENAME}.meta.json`);
   const captionsPath = path.join(assetsDir, `${ASSET_BASENAME}.captions.json`);
 
   let provider = null;
-  let durationSec = null;
   if (!force && fs.existsSync(audioPath) && fs.existsSync(metaPath)) {
     try {
       const prior = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
       if (prior && prior.cacheKey === cacheKey && prior.provider) {
         provider = prior.provider;
-        durationSec = prior.durationSec ?? null;
         log(`cache hit — reusing ${audioPath} (provider=${provider})`);
       }
     } catch {
@@ -189,15 +206,31 @@ async function generateTeaserAudio({
   }
 
   if (provider === null) {
-    try {
-      log('Generating narration with Kokoro (am_adam)…');
-      const res = synthesizeKokoro({ text: TEASER_TEXT, voice: voiceId, speed, lang: language, outMp3: audioPath, env });
-      durationSec = res.durationSec;
-      provider = 'kokoro';
-    } catch (err) {
-      log(`Kokoro failed: ${err.message} — falling back to edge-tts`);
-      const voice = (config && config.voice) || 'en-US-ChristopherNeural';
-      const voiceRate = (config && config.voice_rate) || '+0%';
+    const voice = (config && config.voice) || 'en-US-GuyNeural';
+    const voiceRate = (config && config.voice_rate) || '+0%';
+
+    if (apiKey && voiceId) {
+      try {
+        log('Generating narration with ElevenLabs…');
+        const { audio } = await narrateWithElevenLabs({
+          apiKey,
+          text: TEASER_TEXT,
+          voiceId,
+          modelId,
+          settings: VOICE_SETTINGS,
+          fetchImpl,
+        });
+        atomicWriteBytes(audioPath, audio);
+        provider = 'elevenlabs';
+      } catch (err) {
+        // ponytail: err.message is already redacted by narrateWithElevenLabs
+        // (it never includes the api key). Safe to log.
+        log(`ElevenLabs failed: ${err.message} — falling back to edge-tts`);
+        await edgeTtsImpl(TEASER_TEXT, voice, voiceRate, audioPath);
+        provider = 'edge-tts';
+      }
+    } else {
+      log('ELEVENLABS_API_KEY or ELEVENLABS_VOICE_ID missing — using edge-tts fallback');
       await edgeTtsImpl(TEASER_TEXT, voice, voiceRate, audioPath);
       provider = 'edge-tts';
     }
@@ -207,10 +240,9 @@ async function generateTeaserAudio({
       JSON.stringify(
         {
           provider,
-          voice: voiceId,
-          speed,
-          language,
-          durationSec,
+          voiceId,
+          modelId,
+          settings: VOICE_SETTINGS,
           cacheKey,
           generatedAt: new Date().toISOString(),
         },
@@ -225,8 +257,8 @@ async function generateTeaserAudio({
   const captions = await generateCaptionsForProvider({
     provider,
     audioPath,
-    text: TEASER_TEXT,
-    durationSec: durationSec ?? SCENE_DURATION,
+    captionImpl,
+    sceneDir,
   });
   fs.writeFileSync(captionsPath, JSON.stringify(captions, null, 2));
 
@@ -236,27 +268,25 @@ async function generateTeaserAudio({
     metaPath,
     captionsPath,
     cacheKey,
-    voice: voiceId,
-    speed,
-    language,
-    durationSec,
+    voiceId,
+    modelId,
+    settings: VOICE_SETTINGS,
     captions,
   };
 }
 
 module.exports = {
   generateTeaserAudio,
-  generateCaptionsForProvider,
   TEASER_TEXT,
+  VOICE_SETTINGS,
   ASSET_BASENAME,
   SCENE_DURATION,
   atomicWriteBytes,
   validateCaptions,
   parseSrt,
   defaultEdgeTts,
+  loadRootEnv,
   readRootConfig,
-  DEFAULT_LANGUAGE,
-  DEFAULT_VOICE_ID,
 };
 
 if (require.main === module) {

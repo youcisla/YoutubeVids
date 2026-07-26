@@ -4,6 +4,7 @@
   "private": true,
   "description": "Faceless YouTube book summary video pipeline",
   "scripts": {
+    "setup:all": "node scripts/setup-all.js",
     "setup:models": "node scripts/setup-models.js",
     "build:ch": "node build-chapter.js --book atomic-habits --chapter",
     "build:batch": "node build-chapter.js --batch atomic-habits",

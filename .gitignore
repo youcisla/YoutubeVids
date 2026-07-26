@@ -11,9 +11,9 @@ node_modules/
 
 # Build output
 dist/
-*.mp4
-*.wav
-*.mp3
+# *.mp4
+# *.wav
+# *.mp3
 *.ogg
 *.png
 *.jpg
@@ -40,10 +40,6 @@ scenes/scene_*/test_out.mp4
 
 # Vendor files (vendored for reproducibility but not tracked)
 vendor/
-
-# Local model weights — downloaded on first run via `npm run setup:models`
-# (Kokoro ONNX is 310MB; exceeds GitHub's 100MB push limit). Re-run if missing.
-models/
 
 # Temp files
 *.tmp

@@ -1,17 +1,32 @@
 [
   {
-    "start": 0,
-    "end": 2.009256704980843,
-    "text": "Get one percent better, every day."
+    "start": 0.1,
+    "end": 2.794,
+    "text": "What if one percent was enough?"
   },
   {
-    "start": 2.009256704980843,
-    "end": 3.013885057471265,
-    "text": "After one year..."
+    "start": 2.7439999999999998,
+    "end": 5.425,
+    "text": "Get one percent better each day."
   },
   {
-    "start": 3.013885057471265,
-    "end": 5.141333333333334,
-    "text": "you'll be thirty-seven times better."
+    "start": 5.425,
+    "end": 8.969,
+    "text": "After one year, you're thirty-seven times better."
+  },
+  {
+    "start": 8.969,
+    "end": 10.927,
+    "text": "Small habits."
+  },
+  {
+    "start": 10.927,
+    "end": 12.86,
+    "text": "Big results."
+  },
+  {
+    "start": 12.86,
+    "end": 15,
+    "text": "Watch the full summary."
   }
 ]
