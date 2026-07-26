@@ -1,12 +1,17 @@
 # edu-channel — Faceless Book Summary YouTube Pipeline
 
-Programmatic video pipeline that turns structured JSON chapter data into polished, narrated, captioned YouTube videos. Each book = a playlist of chapter videos, rendered via **HyperFrames + GSAP + FFmpeg** — no stock footage, no human faces, no AI slop.
+Local repo name is `edu-channel`. The **YouTube channel is "Chapter Zero"** → https://www.youtube.com/@chapterzer.
+
+Programmatic video pipeline that turns structured JSON chapter data into polished, narrated, captioned YouTube videos. Each book = a playlist of chapter videos, rendered via **HyperFrames + GSAP + FFmpeg + Kokoro TTS (am_adam)** — no stock footage, no human faces, no AI slop.
 
 ## Quick Start
 
 ```bash
-# Install dependencies
+# Install dependencies (incl. sharp for thumbnail generation)
 npm install
+
+# Download the Kokoro TTS model (~338MB, on first run only)
+npm run setup:models
 
 # Generate one chapter
 node build-chapter.js --book atomic-habits --chapter 1
@@ -17,6 +22,12 @@ node build-chapter.js --batch atomic-habits
 # Render + upload to YouTube in one pass
 node build-chapter.js --batch atomic-habits --upload
 ```
+
+> The Kokoro ONNX model and voices.bin live under `models/kokoro/` and are
+> **not committed to git** (Kokoro is 310MB, exceeds GitHub's 100MB push
+> limit). `npm run setup:models` downloads them from
+> `huggingface.co/fastrtc/kokoro-onnx` and is idempotent — safe to re-run.
+> Re-download any time by deleting the directory.
 
 ## What You Need
 
