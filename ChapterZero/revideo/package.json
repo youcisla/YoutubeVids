@@ -1,0 +1,15 @@
+{
+  "name": "chapter-zero-revideo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "render": "node render-chapter.mjs",
+    "preview": "npx revideo preview"
+  },
+  "dependencies": {
+    "@revideo/2d": "^0.11.0",
+    "@revideo/core": "^0.11.0",
+    "@revideo/ffmpeg": "^0.11.0"
+  }
+}

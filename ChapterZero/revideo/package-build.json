@@ -1,0 +1,1 @@
+{"name":"revideo-build","private":true,"type":"module","dependencies":{"vite":"^6.0.0","@revideo/vite-plugin":"^0.11.0"}}
