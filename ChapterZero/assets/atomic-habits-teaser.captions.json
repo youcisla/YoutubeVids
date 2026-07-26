@@ -1,32 +1,32 @@
 [
   {
     "start": 0.1,
-    "end": 2.794,
-    "text": "What if one percent was enough?"
+    "end": 4.057,
+    "text": "What if one percent — every single day... held for a year?"
   },
   {
-    "start": 2.7439999999999998,
-    "end": 5.425,
-    "text": "Get one percent better each day."
+    "start": 4.007,
+    "end": 8.943,
+    "text": "After three hundred and sixty-five days, you'd be thirty-seven times better."
   },
   {
-    "start": 5.425,
-    "end": 8.969,
-    "text": "After one year, you're thirty-seven times better."
+    "start": 8.943,
+    "end": 10.657,
+    "text": "Not one."
   },
   {
-    "start": 8.969,
-    "end": 10.927,
+    "start": 10.657,
+    "end": 12.564,
+    "text": "Thirty-seven."
+  },
+  {
+    "start": 12.564,
+    "end": 14.523,
     "text": "Small habits."
   },
   {
-    "start": 10.927,
-    "end": 12.86,
-    "text": "Big results."
-  },
-  {
-    "start": 12.86,
+    "start": 14.523,
     "end": 15,
-    "text": "Watch the full summary."
+    "text": "Big results."
   }
 ]
